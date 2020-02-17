@@ -1,5 +1,5 @@
 {
-  "name": "where_cheaper",
+  "name": "bride-party",
   "version": "0.0.1",
   "description": "",
   "main": "src/app.ts",
@@ -58,31 +58,15 @@
     "uuid": "3.3.3",
     "winston": "3.2.1"
   },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/test/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "testEnvironment": "node",
-    "setupTestFrameworkScriptFile": "./test/unit/lib/setup.ts"
-  },
   "license": "MIT",
   "devDependencies": {
     "@types/bluebird": "3.5.29",
-    "@types/bull": "3.10.6",
     "@types/cors": "2.8.6",
     "@types/dotenv": "8.2.0",
     "@types/express": "4.17.2",
     "@types/google-libphonenumber": "7.4.17",
     "@types/graphql": "14.5.0",
     "@types/helmet": "0.0.45",
-    "@types/jest": "24.0.23",
     "@types/morgan": "1.7.37",
     "@types/nock": "11.1.0",
     "@types/node": "13.1.1",
@@ -91,9 +75,7 @@
     "@types/serve-favicon": "2.5.0",
     "@types/uuid": "3.4.6",
     "cross-env": "6.0.3",
-    "jest": "24.9.0",
     "ncp": "2.0.0",
-    "nock": "11.7.0",
-    "ts-jest": "24.2.0"
+    "nock": "11.7.0"
   }
 }

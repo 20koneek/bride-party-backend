@@ -2,7 +2,6 @@ import { Field, GraphQLTimestamp, ID, Int, ObjectType } from 'type-graphql'
 import { IsNotEmpty } from 'class-validator'
 import { Moment } from 'moment'
 import { Column } from 'typeorm'
-import { CheckProduct } from '../CheckProduct'
 
 @ObjectType({
   description: 'Check object.',
@@ -30,9 +29,4 @@ export class Check {
     description: 't params.',
   })
   public dateTime: Moment
-
-  @Field(() => [CheckProduct], {
-    description: 'A list of pets which belong to the user.',
-  })
-  public checkProducts: CheckProduct[]
 }

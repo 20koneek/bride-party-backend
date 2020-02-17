@@ -8,11 +8,9 @@ import { expressLoader } from './loaders/expressLoader'
 import { graphqlLoader } from './loaders/graphqlLoader'
 import { homeLoader } from './loaders/homeLoader'
 import { iocLoader } from './loaders/iocLoader'
-import { monitorLoader } from './loaders/monitorLoader'
 import { publicLoader } from './loaders/publicLoader'
 import { typeormLoader } from './loaders/typeormLoader'
 import { winstonLoader } from './loaders/winstonLoader'
-import { bullArenaLoader } from './loaders/bullArenaLoader'
 import { firebaseLoader } from './loaders/firebaseLoader'
 
 const log = new Logger(__filename)
@@ -25,11 +23,9 @@ bootstrapMicroframework({
     firebaseLoader,
     typeormLoader,
     expressLoader,
-    monitorLoader,
     homeLoader,
     publicLoader,
     graphqlLoader,
-    bullArenaLoader,
   ],
 })
   .then(() => banner(log))

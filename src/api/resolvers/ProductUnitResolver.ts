@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
 import { ProductUnitService } from '../services'
-import { ProductUnit, ProductUnitInput, ProductUnits } from '../types'
+import { ProductUnit, ProductUnitInput } from '../types'
 
 @Service()
 @Resolver(() => ProductUnit)
@@ -12,10 +12,10 @@ export class ProductUnitResolver {
   ) {
   }
 
-  @Query(() => [ProductUnits])
+  @Query(() => [ProductUnit])
   public productUnits(
     @Arg('id', { nullable: true }) id?: string,
-  ): Promise<ProductUnits[]> {
+  ): Promise<ProductUnit[]> {
     return this.service.all(id)
   }
 

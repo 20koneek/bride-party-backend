@@ -59,23 +59,6 @@ export const env = {
     route: getOsEnv('GRAPHQL_ROUTE'),
     editor: toBool(getOsEnv('GRAPHQL_EDITOR')),
   },
-  monitor: {
-    enabled: toBool(getOsEnv('MONITOR_ENABLED')),
-    route: getOsEnv('MONITOR_ROUTE'),
-    username: getOsEnv('MONITOR_USERNAME'),
-    password: getOsEnv('MONITOR_PASSWORD'),
-  },
-  bullArena: {
-    enabled: toBool(getOsEnv('BULL_ARENA_ENABLED')),
-    route: getOsEnv('BULL_ARENA_ROUTE'),
-    disableListen: toBool(getOsEnv('BULL_ARENA_DISABLE_LISTEN')),
-  },
-  redis: {
-    user: getOsEnv('REDIS_USER'),
-    host: getOsEnv('REDIS_HOST'),
-    port: toNumber(getOsEnv('REDIS_PORT')),
-    password: getOsEnv('REDIS_PASSWORD'),
-  },
   firebase: {
     certCredential: {
       projectId: getOsEnv('PROJECT_ID'),

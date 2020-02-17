@@ -68,13 +68,6 @@ module.exports = {
       description: 'Builds the app into the dist directory',
     },
     /**
-     * Runs TSLint over your project
-     */
-    lint: {
-      script: tslint(`./src/**/*.ts`),
-      hiddenFromHelp: true,
-    },
-    /**
      * Transpile your app into javascript
      */
     transpile: {
@@ -181,10 +174,6 @@ module.exports = {
           ),
           description: 'Runs the unit tests',
         },
-        pretest: {
-          script: tslint(`./test/unit/**.ts`),
-          hiddenFromHelp: true,
-        },
         run: {
           script: 'cross-env NODE_ENV=test jest --testPathPattern=unit',
           hiddenFromHelp: true,
@@ -206,10 +195,6 @@ module.exports = {
             'nps test.integration.run',
           ),
           description: 'Runs the integration tests',
-        },
-        pretest: {
-          script: tslint(`./test/integration/**.ts`),
-          hiddenFromHelp: true,
         },
         run: {
           // -i. Run all tests serially in the current process, rather than creating a worker pool of child processes that run tests. This can be useful for debugging.
@@ -233,10 +218,6 @@ module.exports = {
             'nps test.e2e.run',
           ),
           description: 'Runs the e2e tests',
-        },
-        pretest: {
-          script: tslint(`./test/e2e/**.ts`),
-          hiddenFromHelp: true,
         },
         run: {
           // -i. Run all tests serially in the current process, rather than creating a worker pool of child processes that run tests. This can be useful for debugging.
@@ -289,8 +270,4 @@ function copyDir(source, target) {
 
 function runFast(path) {
   return `ts-node -T ${path}`
-}
-
-function tslint(path) {
-  return `tslint -c ./tslint.json ${path} --format stylish`
 }

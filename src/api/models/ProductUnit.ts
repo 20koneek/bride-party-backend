@@ -1,7 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { BaseModel } from './BaseModel'
-import { Product } from './Product'
 
 @Entity()
 @Index(['name'])
@@ -35,9 +34,4 @@ export class ProductUnit extends BaseModel {
     },
   )
   public productUnits: ProductUnit[]
-
-  @OneToMany(() => Product, ({ productUnit }) => productUnit, {
-    lazy: true,
-  })
-  public products: Product[]
 }

@@ -15,12 +15,6 @@ export function banner(log: Logger): void {
     if (env.graphql.enabled) {
       log.info(`GraphQL      : ${route()}${env.graphql.route}`)
     }
-    if (env.monitor.enabled) {
-      log.info(`Monitor      : ${route()}${env.monitor.route}`)
-    }
-    if (env.bullArena.enabled) {
-      log.info(`Arena        : ${route()}${env.bullArena.route}`)
-    }
     log.info('-------------------------------------------------------')
     log.info('')
   } else {

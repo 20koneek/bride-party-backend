@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class AddExtentionUuid1553094186283 implements MigrationInterface {
+export class AddExtensionUuid1553094186283 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.connection.query(`CREATE extension IF NOT EXISTS "uuid-ossp"`)

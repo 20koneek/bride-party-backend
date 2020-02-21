@@ -1,5 +1,5 @@
 import { Field, ObjectType } from 'type-graphql'
-import { PageInfo } from '../PageInfo'
+import { Guest } from '../Guest'
 import { Check } from './Check'
 
 @ObjectType()
@@ -8,6 +8,6 @@ export class CheckPaginate {
   @Field(() => [Check])
   public checks: Check[]
 
-  @Field(() => PageInfo)
-  public pageInfo: PageInfo
+  @Field(() => Guest)
+  public pageInfo: Guest
 }

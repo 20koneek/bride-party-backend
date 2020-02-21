@@ -1,1 +1,1 @@
-export * from './ProductUnitResolver'
+export * from './GuestResolver'

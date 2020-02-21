@@ -1,8 +1,8 @@
 import { Service } from 'typedi'
 import { IsNull } from 'typeorm'
 
-import { ProductUnit } from '../models'
-import { ProductUnitInput } from '../types/input'
+import { ProductUnitInput } from '../types/input/ProductUnitInput'
+import { ProductUnit } from '../models/ProductUnit'
 
 @Service()
 export class ProductUnitService {

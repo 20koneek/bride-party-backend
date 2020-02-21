@@ -1,7 +1,8 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
-import { ProductUnitService } from '../services'
-import { ProductUnit, ProductUnitInput } from '../types'
+import { ProductUnit } from '../types/ProductUnit'
+import { ProductUnitInput } from '../types/input/ProductUnitInput'
+import { ProductUnitService } from '../services/ProductUnitService'
 
 @Service()
 @Resolver(() => ProductUnit)

@@ -7,7 +7,7 @@ export class CreatePayment1582054270414 extends BaseCreateTable {
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = this.initTable([{
             name: 'amount',
-            type: 'NUMERIC(6, 2)',
+            type: 'integer',
         }, {
             name: 'status',
             type: 'varchar',

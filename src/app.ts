@@ -22,12 +22,12 @@ bootstrapMicroframework({
         iocLoader,
         eventDispatchLoader,
         firebaseLoader,
+        theMapLoader,
         typeormLoader,
         expressLoader,
         homeLoader,
         publicLoader,
         graphqlLoader,
-        theMapLoader,
     ],
 })
     .then(() => banner(log))

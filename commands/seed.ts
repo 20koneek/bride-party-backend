@@ -1,6 +1,7 @@
 import chalk from 'chalk'
 import commander from 'commander'
 import * as path from 'path'
+// @ts-ignore
 import { loadConnection, loadEntityFactories, loadSeeds, runSeed, setConnection } from 'typeorm-seeding'
 
 // Cli helper

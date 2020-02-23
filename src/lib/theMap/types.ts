@@ -27,16 +27,21 @@ export namespace TheMapTypes {
             // Type	pay/add	Соответсвует переданному в запросе
             // ErrCode	Описание ошибки. Передается пустой, если «Success=true»	см. коды ошибок
             // ErrMessage	Дополнительное описание ошибки. Передается пустой, если «Success=true»	Строка
-            // SessionGUID	Уникальный идентификатор сессии	Строка
+            SessionGUID: string//	Уникальный идентификатор сессии	Строка
         }
 
         export interface Error {
         }
 
-        export type Response = Success | Error
+        export type Response = Success & Error
     }
 
     export namespace CreateUser {
+        export interface Params {
+            login: string
+            password: string
+        }
+
         export interface Success {
             Success: boolean
             UserId: number
@@ -50,6 +55,23 @@ export namespace TheMapTypes {
             ErrMessage: string
         }
 
-        export type Response = Success | Error
+        export type Response = Success & Error
+    }
+
+    export namespace CreatePayment {
+        export interface Params {
+            SessionGUID: string
+        }
+
+        export interface Success {
+        }
+
+        export interface Error {
+            Success: string
+            ErrCode: string
+            ErrMessage: string
+        }
+
+        export type Response = Success & Error
     }
 }

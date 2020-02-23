@@ -8,14 +8,10 @@ export const theMapLoader: MicroframeworkLoader = async (settings: Microframewor
             env.theMap.domain,
             env.theMap.key,
             env.theMap.keyPassword,
+            env.theMap.successUrl,
+            env.theMap.failUrl,
         )
 
-        console.log(await theMap.init({
-            type: 'Add',
-            userLogin: 'test',
-            userPassword: '123',
-            // orderId: '1234',
-            // amount: 1,
-        }))
+        settings.setData('the_map', theMap)
     }
 }

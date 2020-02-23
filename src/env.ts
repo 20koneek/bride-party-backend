@@ -73,5 +73,7 @@ export const env = {
         key: getOsEnv('THE_MAP_KEY'),
         merchantPassword: getOsEnv('THE_MAP_MERCHANT_PASSWORD'),
         keyPassword: getOsEnv('THE_MAP_KEY_PASSWORD'),
+        successUrl: getOsEnv('THE_MAP_SUCCESS_URL'),
+        failUrl: getOsEnv('THE_MAP_FAIL_URL'),
     },
 }

@@ -9,7 +9,18 @@ export class TheMap {
         private domain: string,
         private key: string,
         private password: string,
+        private successUrl: string,
+        private failUrl: string,
     ) {
+    }
+
+    private getCustomParam = (): string => {
+        const param = {
+            successUrl: this.successUrl,
+            failUrl: this.failUrl,
+        }
+
+        return Object.keys(param).map((key) => `${key}=${param[key]}`).join(';')
     }
 
     private getUrl = (url: string): URL => (
@@ -38,11 +49,11 @@ export class TheMap {
         cardUId,
         userLogin,
         userPassword,
-    }: TheMapTypes.Init.Params): Promise<TheMapTypes.CreateUser.Response> => {
+    }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Password', this.password)
-        createParams.set('CustomParams', 'successUrl=https://mapcard.pro;failUrl=https://mapisacard.com;Email=user@example.com;PayButtonCustomText=Оформить подписку за 1 руб.')
+        createParams.set('CustomParams', this.getCustomParam())
         orderId && createParams.set('OrderId', orderId)
         amount && createParams.set('Amount', amount.toString())
         addCard && createParams.set('AddCard', addCard.toString())
@@ -56,12 +67,20 @@ export class TheMap {
 
         return await this.fetchQuery('init', createParams)
     }
-    public createUser = async (login: string, password: string): Promise<TheMapTypes.CreateUser.Response> => {
+
+    public createUser = async ({ login, password }: TheMapTypes.CreateUser.Params): Promise<TheMapTypes.CreateUser.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Login', login)
         createParams.set('Password', password)
 
         return await this.fetchQuery('createUser', createParams)
+    }
+
+    public createPayment = ({ SessionGUID }: TheMapTypes.CreatePayment.Params): string => {
+        const createParams = new URLSearchParams()
+        createParams.set('SessionId', SessionGUID)
+
+        return `${this.getUrl('createPayment')}?${createParams}`
     }
 }

@@ -10,16 +10,20 @@ export class CreateGuest1582319177817 extends BaseCreateTable {
             type: 'varchar',
             length: '30',
         }, {
-            name: 'firebase_uid',
+            name: 'token',
             type: 'uuid',
+        }, {
+            name: 'salt',
+            type: 'varchar',
+            length: '40',
         }])
 
-        const firebaseUidIndex = new TableIndex({
-            columnNames: ['firebase_uid'],
+        const tokenIndex = new TableIndex({
+            columnNames: ['token'],
             isUnique: true,
         })
 
         await queryRunner.createTable(table)
-        await queryRunner.createIndex(table, firebaseUidIndex)
+        await queryRunner.createIndex(table, tokenIndex)
     }
 }

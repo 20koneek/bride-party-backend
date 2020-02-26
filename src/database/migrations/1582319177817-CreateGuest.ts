@@ -10,20 +10,21 @@ export class CreateGuest1582319177817 extends BaseCreateTable {
             type: 'varchar',
             length: '30',
         }, {
-            name: 'token',
-            type: 'uuid',
+            name: 'uid',
+            type: 'varchar',
+            length: '28',
         }, {
             name: 'salt',
             type: 'varchar',
             length: '40',
         }])
 
-        const tokenIndex = new TableIndex({
-            columnNames: ['token'],
+        const uidIndex = new TableIndex({
+            columnNames: ['uid'],
             isUnique: true,
         })
 
         await queryRunner.createTable(table)
-        await queryRunner.createIndex(table, tokenIndex)
+        await queryRunner.createIndex(table, uidIndex)
     }
 }

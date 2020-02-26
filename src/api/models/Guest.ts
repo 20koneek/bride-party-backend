@@ -5,7 +5,7 @@ import { SHA1 } from 'crypto-js'
 import v4 from 'uuid/v4'
 
 @Entity()
-@Index(['token'], { unique: true })
+@Index(['uid'], { unique: true })
 export class Guest extends BaseModel {
 
     constructor() {
@@ -19,7 +19,7 @@ export class Guest extends BaseModel {
 
     @IsNotEmpty()
     @Column()
-    public token: string
+    public uid: string
 
     @IsNotEmpty()
     @Column()

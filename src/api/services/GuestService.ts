@@ -4,14 +4,14 @@ import { Guest } from '../models'
 @Service()
 export class GuestService {
 
-    public find = (token: string): Promise<Guest | undefined> => (
-        Guest.findOne({ token })
+    public find = (uid: string): Promise<Guest | undefined> => (
+        Guest.findOne({ uid })
     )
 
-    public create = ({ name, token }: { name: string, token: string }): Promise<Guest> => {
+    public create = ({ name, uid }: { name: string, uid: string }): Promise<Guest> => {
         const guest = new Guest()
         guest.name = name
-        guest.token = token
+        guest.uid = uid
 
         return guest.save()
     }

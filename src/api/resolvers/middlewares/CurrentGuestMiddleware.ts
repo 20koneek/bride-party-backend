@@ -11,19 +11,15 @@ export class CurrentGuestMiddleware implements MiddlewareInterface<Context> {
     }
 
     public use = async ({ context }: ResolverData<Context>, next: NextFn) => {
+        console.log('+============================================================')
         if (!context.token) {
             throw new Error('Not auth')
         }
 
-        // const { uid } = await context.firebase.auth().verifyIdToken(context.token)
+        const { uid } = await context.firebase.auth().verifyIdToken(context.token)
+        context.uid = uid
+        context.currentGuest = await this.service.find(uid)
 
-        let currentGuest = await this.service.find(context.token)
-
-        if (currentGuest) {
-            context.currentGuest = currentGuest
-            return next()
-        }
-
-        throw new Error('Not auth')
+        return next()
     }
 }

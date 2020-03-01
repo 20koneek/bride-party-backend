@@ -11,7 +11,6 @@ export class CurrentGuestMiddleware implements MiddlewareInterface<Context> {
     }
 
     public use = async ({ context }: ResolverData<Context>, next: NextFn) => {
-        console.log('+============================================================')
         if (!context.token) {
             throw new Error('Not auth')
         }

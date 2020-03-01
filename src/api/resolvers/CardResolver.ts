@@ -2,7 +2,7 @@ import { Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Guest } from '../types'
 import { Context } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares/CurrentGuestMiddleware'
+import { CurrentGuestMiddleware } from './middlewares'
 
 @Service()
 @Resolver(() => Guest)

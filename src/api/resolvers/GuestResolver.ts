@@ -1,9 +1,9 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Guest, GuestInput } from '../types'
 import { GuestService } from '../services'
 import { Context } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares/CurrentGuestMiddleware'
+import { CurrentGuestMiddleware } from './middlewares'
 
 @Service()
 @Resolver(() => Guest)
@@ -12,6 +12,18 @@ export class GuestResolver {
     constructor(
         private service: GuestService,
     ) {
+    }
+
+    @Query(() => Guest)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public currentGuest(
+        @Ctx() { currentGuest }: Context,
+    ): Guest {
+        if (!currentGuest) {
+            throw new Error('not auth')
+        }
+
+        return currentGuest
     }
 
     @Mutation(() => Guest)

@@ -1,2 +1,2 @@
 export * from './input'
-export * from './Guest'
+export { Guest } from './Guest'

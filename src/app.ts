@@ -12,21 +12,23 @@ import { publicLoader } from './loaders/publicLoader'
 import { typeormLoader } from './loaders/typeormLoader'
 import { winstonLoader } from './loaders/winstonLoader'
 import { firebaseLoader } from './loaders/firebaseLoader'
+import { theMapLoader } from './loaders/theMapLoader'
 
 const log = new Logger(__filename)
 
 bootstrapMicroframework({
-  loaders: [
-    winstonLoader,
-    iocLoader,
-    eventDispatchLoader,
-    firebaseLoader,
-    typeormLoader,
-    expressLoader,
-    homeLoader,
-    publicLoader,
-    graphqlLoader,
-  ],
+    loaders: [
+        winstonLoader,
+        iocLoader,
+        eventDispatchLoader,
+        firebaseLoader,
+        theMapLoader,
+        typeormLoader,
+        expressLoader,
+        homeLoader,
+        publicLoader,
+        graphqlLoader,
+    ],
 })
-  .then(() => banner(log))
+    .then(() => banner(log))
 // .catch(error => log.error('Application is crashed: ' + error))

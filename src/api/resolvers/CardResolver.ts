@@ -3,10 +3,16 @@ import { Service } from 'typedi'
 import { Guest } from '../types'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
+import { PaymentService } from '../services'
 
 @Service()
 @Resolver(() => Guest)
 export class CardResolver {
+
+    constructor(
+        private paymentService: PaymentService,
+    ) {
+    }
 
     @Mutation(() => String)
     @UseMiddleware(CurrentGuestMiddleware)
@@ -17,15 +23,19 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
+        const payment = await this.paymentService.create({ amount: 100, guestId: currentGuest.id })
+
         const { SessionGUID } = await theMap.init({
             type: 'Add',
-            orderId: '123',
-            amount: 100,
+            orderId: payment.id,
+            amount: payment.amount,
             addCard: true,
             recurrent: true,
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
         })
+
+        await this.paymentService.run(payment.id)
 
         return theMap.createPayment({ SessionGUID })
     }

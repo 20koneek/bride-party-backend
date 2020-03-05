@@ -1,6 +1,6 @@
 export type Global = 'init' | 'checked' | 'disabled'
 
-export enum CheckStatus {
+export enum Status {
   init = 'init',
   run = 'run',
   failed = 'failed',

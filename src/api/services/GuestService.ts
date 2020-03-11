@@ -8,10 +8,14 @@ export class GuestService {
         Guest.findOne({ uid })
     )
 
-    public create = ({ name, uid }: { name: string, uid: string }): Promise<Guest> => {
+    public create = (
+        { name, uid, weddingId }:
+        { name: string, uid: string, weddingId: string },
+    ): Promise<Guest> => {
         const guest = new Guest()
         guest.name = name
         guest.uid = uid
+        guest.weddingId = weddingId
 
         return guest.save()
     }

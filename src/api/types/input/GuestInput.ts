@@ -7,4 +7,8 @@ export class GuestInput {
     @IsNotEmpty()
     @Field()
     public name: string
+
+    @IsNotEmpty()
+    @Field()
+    public weddingId: string
 }

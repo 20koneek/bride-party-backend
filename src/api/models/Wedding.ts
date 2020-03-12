@@ -1,6 +1,5 @@
-import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseModel, Guest } from './'
+import { Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
+import { BaseModel, Contest, Guest } from './'
 
 @Entity()
 export class Wedding extends BaseModel {
@@ -13,14 +12,26 @@ export class Wedding extends BaseModel {
     // @Column({ name: 'woman_name' })
     // public womanName: string
 
-    @IsNotEmpty()
-    @Column({ name: 'guest_id' })
-    public guestId: string
-
     @OneToMany(
         () => Guest,
         ({ wedding }) => wedding,
         { lazy: true },
     )
     public guests: Guest[]
+
+    @ManyToMany(
+        () => Contest,
+        ({ weddings }) => weddings,
+        { lazy: true },
+    )
+    @JoinTable({
+        name: 'contest_wedding',
+        joinColumn: {
+            name: 'wedding_id',
+        },
+        inverseJoinColumn: {
+            name: 'contest_id',
+        },
+    })
+    public contests: Contest[]
 }

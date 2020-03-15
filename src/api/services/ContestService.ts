@@ -4,11 +4,10 @@ import { Contest } from '../models'
 @Service()
 export class ContestService {
 
-    public find = ({ id }: { id: string }): Promise<Contest | undefined> => (
-        Contest.findOne({ id })
-    )
-
-    public all = (): Promise<Contest[]> => (
-        Contest.find()
+    public all = ({ weddingId }: { weddingId: string }): Promise<Contest[]> => (
+        Contest.find({
+            relations: ['weddings'],
+            where: `"Contest__weddings"."id" = '${weddingId}'`,
+        })
     )
 }

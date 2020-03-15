@@ -35,6 +35,7 @@ export class GuestResolver {
         if (!uid) {
             throw new Error('not auth')
         }
+
         const guest = await this.service.create({ name, uid, weddingId })
 
         const { Success, AlreadyCreated } = await theMap.createUser({

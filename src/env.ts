@@ -52,7 +52,7 @@ export const env = {
         password: getOsEnvOptional('PASSWORD'),
         database: getOsEnvOptional('DATABASE'),
         synchronize: toBool(getOsEnvOptional('SYNCHRONIZE')),
-        logging: toBool(getOsEnvOptional('LOGGING')),
+        logging: getOsEnvOptional('LOGGING'),
     },
     graphql: {
         enabled: toBool(getOsEnv('GRAPHQL_ENABLED')),

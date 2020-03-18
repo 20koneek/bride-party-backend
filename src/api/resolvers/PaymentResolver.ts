@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Payment, PaymentInput } from '../types'
 import { PaymentService } from '../services'
@@ -12,6 +12,18 @@ export class PaymentResolver {
     constructor(
         private service: PaymentService,
     ) {
+    }
+
+    @Query(() => [Payment])
+    @UseMiddleware(CurrentGuestMiddleware)
+    public async currentPayments(
+        @Ctx() { currentGuest }: Context,
+    ): Promise<Payment[]> {
+        if (!currentGuest) {
+            throw new Error('not auth')
+        }
+
+        return await this.service.all({ guestId: currentGuest.id })
     }
 
     @Mutation(() => Payment)

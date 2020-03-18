@@ -17,7 +17,7 @@ export class ContestCondition extends BaseModel {
         ({ conditions }) => conditions,
         { lazy: true },
     )
-    @JoinColumn({ name: 'wedding_id' })
+    @JoinColumn({ name: 'contest_id' })
     public contest: Contest
 
     @OneToMany(

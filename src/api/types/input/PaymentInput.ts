@@ -2,13 +2,13 @@ import { IsNotEmpty } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
 
 @InputType()
-export class GuestInput {
+export class PaymentInput {
 
     @IsNotEmpty()
     @Field()
-    public name: string
+    public amount: number
 
     @IsNotEmpty()
     @Field()
-    public weddingId: string
+    public contestConditionId: string
 }

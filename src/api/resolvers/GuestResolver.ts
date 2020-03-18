@@ -30,12 +30,13 @@ export class GuestResolver {
     @UseMiddleware(CurrentGuestMiddleware)
     public async createGuest(
         @Ctx() { uid, theMap }: Context,
-        @Arg('input') { name }: GuestInput,
+        @Arg('input') { name, weddingId }: GuestInput,
     ): Promise<Guest> {
         if (!uid) {
             throw new Error('not auth')
         }
-        const guest = await this.service.create({ name, uid })
+
+        const guest = await this.service.create({ name, uid, weddingId })
 
         const { Success, AlreadyCreated } = await theMap.createUser({
             login: guest.id,

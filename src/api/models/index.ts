@@ -1,3 +1,6 @@
 export { BaseModel } from './BaseModel'
 export { Guest } from './Guest'
 export { Payment } from './Payment'
+export { Wedding } from './Wedding'
+export { Contest } from './Contest'
+export { ContestCondition } from './ContestCondition'

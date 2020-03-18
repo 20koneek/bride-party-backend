@@ -5,10 +5,19 @@ import { UpdateResult } from 'typeorm'
 @Service()
 export class PaymentService {
 
-    public create = ({ amount, guestId }: { amount: number, guestId: string }): Promise<Payment> => {
+    public all = ({ guestId }: { guestId: string }): Promise<Payment[]> => {
+        return Payment.find({ guestId })
+    }
+
+    public create = ({
+        amount, guestId, contestConditionId,
+    }: {
+        amount: number, guestId: string, contestConditionId: string
+    }): Promise<Payment> => {
         const payment = new Payment()
         payment.amount = amount
         payment.guestId = guestId
+        payment.contestConditionId = contestConditionId
 
         return payment.save()
     }

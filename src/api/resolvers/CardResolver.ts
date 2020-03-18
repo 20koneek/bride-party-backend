@@ -23,7 +23,11 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        const payment = await this.paymentService.create({ amount: 100, guestId: currentGuest.id })
+        const payment = await this.paymentService.create({
+            amount: 100,
+            guestId: currentGuest.id,
+            contestConditionId: '32b3e30e-f519-41fc-b528-1961f570e78a',
+        })
 
         const { SessionGUID } = await theMap.init({
             type: 'Add',

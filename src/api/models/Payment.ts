@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { BaseModel, Guest } from './'
+import { BaseModel, ContestCondition, Guest } from './'
 
 @Entity()
 export class Payment extends BaseModel {
@@ -25,4 +25,15 @@ export class Payment extends BaseModel {
     )
     @JoinColumn({ name: 'guest_id' })
     public guest: Guest
+
+    @Column({ name: 'contest_condition_id' })
+    public contestConditionId: string
+
+    @ManyToOne(
+        () => ContestCondition,
+        ({ payments }) => payments,
+        { lazy: true },
+    )
+    @JoinColumn({ name: 'contest_condition_id' })
+    public contestCondition: ContestCondition
 }

@@ -60,11 +60,6 @@ export const env = {
         editor: toBool(getOsEnv('GRAPHQL_EDITOR')),
     },
     firebase: {
-        certCredential: {
-            projectId: getOsEnv('PROJECT_ID'),
-            privateKey: getOsEnv('PRIVATE_KEY'),
-            clientEmail: getOsEnv('CLIENT_EMAIL'),
-        },
         databaseUrl: getOsEnv('FIREBASE_DATABASE_URL'),
     },
     theMap: {

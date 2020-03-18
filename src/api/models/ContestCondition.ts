@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { BaseModel, Contest } from './'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
+import { BaseModel, Contest, Payment } from './'
 
 @Entity({ name: 'contest_condition' })
 export class ContestCondition extends BaseModel {
@@ -19,4 +19,12 @@ export class ContestCondition extends BaseModel {
     )
     @JoinColumn({ name: 'wedding_id' })
     public contest: Contest
+
+    @OneToMany(
+        () => Payment,
+        ({ guest }) => guest,
+        { lazy: true },
+    )
+    public payments: Payment[]
+
 }

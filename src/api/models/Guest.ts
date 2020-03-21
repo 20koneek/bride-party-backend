@@ -3,6 +3,7 @@ import { SHA1 } from 'crypto-js'
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { BaseModel, Payment, Wedding } from './'
+import { CardStatus } from '../types'
 
 @Entity()
 @Index(['uid'], { unique: true })
@@ -24,6 +25,12 @@ export class Guest extends BaseModel {
     @IsNotEmpty()
     @Column()
     public salt: string
+
+    @Column('enum', {
+        name: 'card_status',
+        enum: CardStatus,
+    })
+    public cardStatus: CardStatus
 
     @OneToMany(
         () => Payment,

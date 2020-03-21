@@ -1,6 +1,7 @@
 import { Service } from 'typedi'
 import { Payment } from '../models'
 import { UpdateResult } from 'typeorm'
+import { Status } from '../types/enums'
 
 @Service()
 export class PaymentService {
@@ -23,6 +24,6 @@ export class PaymentService {
     }
 
     public run = (id: string): Promise<UpdateResult> => (
-        Payment.update(id, { status: 'run' })
+        Payment.update(id, { status: Status.Run })
     )
 }

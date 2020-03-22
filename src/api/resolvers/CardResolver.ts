@@ -1,16 +1,17 @@
 import { Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Guest } from '../types'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
-import { PaymentService } from '../services'
+import { GuestService, PaymentService } from '../services'
+import { CardStatus, Guest } from '../types'
 
 @Service()
-@Resolver(() => Guest)
+@Resolver(() => String)
 export class CardResolver {
 
     constructor(
         private paymentService: PaymentService,
+        private guestService: GuestService,
     ) {
     }
 
@@ -42,6 +43,21 @@ export class CardResolver {
         await this.paymentService.run(payment.id)
 
         return theMap.createPayment({ SessionGUID })
+    }
+
+    @Mutation(() => Guest)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public skipCard(
+        @Ctx() { currentGuest }: Context,
+    ): Promise<Guest> {
+        if (!currentGuest) {
+            throw new Error('Not auth')
+        }
+
+        return this.guestService.updateCardStatus({
+            guest: currentGuest,
+            cardStatus: CardStatus.Skipped,
+        })
     }
 }
 

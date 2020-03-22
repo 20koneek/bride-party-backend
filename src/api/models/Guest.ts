@@ -29,6 +29,7 @@ export class Guest extends BaseModel {
     @Column('enum', {
         name: 'card_status',
         enum: CardStatus,
+        default: () => `'${CardStatus.NotSet}'`,
     })
     public cardStatus: CardStatus
 

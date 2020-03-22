@@ -14,6 +14,7 @@ registerEnumType(Status, {
 export enum CardStatus {
     NotSet = 'NotSet',
     Added = 'Added',
+    Failed = 'Failed',
     Skipped = 'Skipped',
 }
 

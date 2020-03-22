@@ -1,5 +1,6 @@
 import { Service } from 'typedi'
 import { Guest } from '../models'
+import { CardStatus } from '../types/enums'
 
 @Service()
 export class GuestService {
@@ -17,6 +18,14 @@ export class GuestService {
         guest.uid = uid
         guest.weddingId = weddingId
 
+        return guest.save()
+    }
+
+    public updateCardStatus = (
+        { guest, cardStatus }:
+        { guest: Guest, cardStatus: CardStatus },
+    ): Promise<Guest> => {
+        guest.cardStatus = cardStatus
         return guest.save()
     }
 }

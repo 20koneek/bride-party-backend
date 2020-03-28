@@ -1,16 +1,13 @@
-import { Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
+import { IsNotEmpty } from 'class-validator'
 import { BaseModel, Contest, Guest } from './'
 
 @Entity()
 export class Wedding extends BaseModel {
 
-    // @IsNotEmpty()
-    // @Column({ name: 'man_name' })
-    // public manName: string
-    //
-    // @IsNotEmpty()
-    // @Column({ name: 'woman_name' })
-    // public womanName: string
+    @IsNotEmpty()
+    @Column()
+    public name: string
 
     @OneToMany(
         () => Guest,

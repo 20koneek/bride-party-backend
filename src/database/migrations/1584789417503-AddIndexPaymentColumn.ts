@@ -2,8 +2,8 @@ import { MigrationInterface, QueryRunner, TableIndex } from 'typeorm'
 
 export class AddIndexPaymentColumn1584789417503 implements MigrationInterface {
     protected tableName = 'payment'
-    protected column = `status`
-    protected indexName = `payment_status_index`
+    protected column = 'status'
+    protected indexName = 'payment_status_index'
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const column = new TableIndex({

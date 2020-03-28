@@ -51,6 +51,9 @@ export class Guest extends BaseModel {
     @JoinColumn({ name: 'wedding_id' })
     public wedding: Wedding
 
+    @Column({ name: 'payment_id' })
+    public paymentId: string
+
     public getPassword = (): string => (
         SHA1(this.salt + this.updatedAt).toString()
     )

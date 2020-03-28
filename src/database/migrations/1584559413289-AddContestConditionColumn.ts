@@ -9,6 +9,7 @@ export class AddContestConditionColumn1584559413289 implements MigrationInterfac
         const idColumn = new TableColumn({
             type: 'uuid',
             name: this.idColumn,
+            isNullable: true,
         })
 
         const foreignKey = new TableForeignKey({

@@ -1,6 +1,5 @@
 import { Service } from 'typedi'
 import { Payment } from '../models'
-import { UpdateResult } from 'typeorm'
 import { Status } from '../types/enums'
 
 @Service()
@@ -23,7 +22,10 @@ export class PaymentService {
         return payment.save()
     }
 
-    public run = (id: string): Promise<UpdateResult> => (
-        Payment.update(id, { status: Status.Run })
-    )
+    public updateStatus = async (id: string, status: Status): Promise<Payment> => {
+        const payment = await Payment.findOneOrFail(id)
+        payment.status = status
+
+        return await payment.save()
+    }
 }

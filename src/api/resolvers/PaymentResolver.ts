@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Payment, PaymentInput } from '../types'
+import { Payment, PaymentInput, Status } from '../types'
 import { PaymentService } from '../services'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
@@ -28,7 +28,7 @@ export class PaymentResolver {
 
     @Mutation(() => Payment)
     @UseMiddleware(CurrentGuestMiddleware)
-    public async pay(
+    public async createPayment(
         @Ctx() { currentGuest }: Context,
         @Arg('input') { amount, contestConditionId }: PaymentInput,
     ): Promise<Payment> {
@@ -41,5 +41,19 @@ export class PaymentResolver {
             contestConditionId,
             guestId: currentGuest.id,
         })
+    }
+
+    @Mutation(() => Payment)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public async updatePaymentStatus(
+        @Ctx() { currentGuest }: Context,
+        @Arg('id') id: string,
+        @Arg('status', () => Status) status: Status,
+    ): Promise<Payment> {
+        if (!currentGuest) {
+            throw new Error('not auth')
+        }
+
+        return await this.service.updateStatus(id, status)
     }
 }

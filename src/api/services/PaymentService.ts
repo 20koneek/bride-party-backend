@@ -12,7 +12,7 @@ export class PaymentService {
     public create = ({
         amount, guestId, contestConditionId,
     }: {
-        amount: number, guestId: string, contestConditionId: string
+        amount: number, guestId: string, contestConditionId?: string
     }): Promise<Payment> => {
         const payment = new Payment()
         payment.amount = amount

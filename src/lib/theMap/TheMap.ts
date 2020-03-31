@@ -9,15 +9,14 @@ export class TheMap {
         private domain: string,
         private key: string,
         private password: string,
-        private successUrl: string,
-        private failUrl: string,
+        private hostUrl: string,
     ) {
     }
 
-    private getCustomParam = (): string => {
+    private getCustomParam = ({ successUrl, failUrl }: { successUrl: string, failUrl: string }): string => {
         const param = {
-            successUrl: this.successUrl,
-            failUrl: this.failUrl,
+            successUrl: `${this.hostUrl}/${successUrl}`,
+            failUrl: `${this.hostUrl}/${failUrl}`,
         }
 
         return Object.keys(param).map((key) => `${key}=${param[key]}`).join(';')
@@ -49,11 +48,13 @@ export class TheMap {
         cardUId,
         userLogin,
         userPassword,
+        successUrl,
+        failUrl,
     }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Password', this.password)
-        createParams.set('CustomParams', this.getCustomParam())
+        createParams.set('CustomParams', this.getCustomParam({ successUrl, failUrl }))
         orderId && createParams.set('OrderId', orderId)
         amount && createParams.set('Amount', amount.toString())
         addCard && createParams.set('AddCard', addCard.toString())

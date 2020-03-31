@@ -6,18 +6,17 @@ export namespace TheMapTypes {
         export interface Params {
             orderId?: string
             amount?: number
-            // CustomParams	Дополнительные параметры платежа
             addCard?: boolean
             type: Type
             paymentType?: PaymentType
             // Action	Дополнительное действие с заблокированной суммой. «Unblock» - разблокировка	Доступно только для TwoStep	Нет
             recurrent?: boolean
             lifetime?: number
-            // Goods	Список наименований товаров/услуг для отправки в ОФД (54-ФЗ)
             cardUId?: string
             userLogin?: string
             userPassword?: string
-            // Split	Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами	Строка, содержащая группы пар ключ-значение, где группы содержатся в фигурных скобках {}, пары ключ-значение разделены символом «,» (запятая). Ключ и значение разделены символом «:» (двоеточие). Строка обособляется прямоугольными скобками «[]». Параметры ключей и значений выдаются Продавцу с параметрами тестового/боевого доступа. Общая сумма всех составных частей должна соответствовать Amount	Нет
+            successUrl: string
+            failUrl: string
         }
 
         export interface Success {

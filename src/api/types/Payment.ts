@@ -14,5 +14,5 @@ export class Payment {
     public status: Status
 
     @Field(() => ContestCondition)
-    public contestCondition: ContestCondition
+    public contestCondition?: ContestCondition
 }

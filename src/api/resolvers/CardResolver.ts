@@ -27,8 +27,9 @@ export class CardResolver {
         const payment = await this.paymentService.create({
             amount: 100,
             guestId: currentGuest.id,
-            contestConditionId: '32b3e30e-f519-41fc-b528-1961f570e78a',
         })
+        const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
+        const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
 
         const { SessionGUID } = await theMap.init({
             type: 'Add',
@@ -38,6 +39,8 @@ export class CardResolver {
             recurrent: true,
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
+            successUrl,
+            failUrl,
         })
 
         await this.paymentService.updateStatus(payment.id, Status.Run)

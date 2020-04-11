@@ -31,4 +31,4 @@ bootstrapMicroframework({
     ],
 })
     .then(() => banner(log))
-// .catch(error => log.error('Application is crashed: ' + error))
+    .catch(error => log.error('Application is crashed: ' + error))

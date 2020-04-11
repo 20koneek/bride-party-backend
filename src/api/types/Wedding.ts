@@ -7,6 +7,9 @@ export class Wedding {
     @Field(() => ID)
     public id: string
 
+    @Field()
+    public name: string
+
     @Field(() => [Contest])
     public contests: Contest[]
 }

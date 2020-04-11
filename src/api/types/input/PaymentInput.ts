@@ -10,5 +10,5 @@ export class PaymentInput {
 
     @IsNotEmpty()
     @Field()
-    public contestConditionId: string
+    public conditionId: string
 }

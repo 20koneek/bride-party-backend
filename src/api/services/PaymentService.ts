@@ -10,14 +10,14 @@ export class PaymentService {
     }
 
     public create = ({
-        amount, guestId, contestConditionId,
+        amount, guestId, conditionId,
     }: {
-        amount: number, guestId: string, contestConditionId?: string
+        amount: number, guestId: string, conditionId?: string
     }): Promise<Payment> => {
         const payment = new Payment()
         payment.amount = amount
         payment.guestId = guestId
-        payment.contestConditionId = contestConditionId
+        payment.contestConditionId = conditionId
 
         return payment.save()
     }

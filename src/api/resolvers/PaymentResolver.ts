@@ -30,7 +30,7 @@ export class PaymentResolver {
     @UseMiddleware(CurrentGuestMiddleware)
     public async createPayment(
         @Ctx() { currentGuest }: Context,
-        @Arg('input') { amount, contestConditionId }: PaymentInput,
+        @Arg('input') { amount, conditionId }: PaymentInput,
     ): Promise<Payment> {
         if (!currentGuest) {
             throw new Error('not auth')
@@ -38,7 +38,7 @@ export class PaymentResolver {
 
         return await this.service.create({
             amount,
-            contestConditionId,
+            conditionId,
             guestId: currentGuest.id,
         })
     }

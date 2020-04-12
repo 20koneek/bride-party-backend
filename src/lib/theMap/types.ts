@@ -35,6 +35,29 @@ export namespace TheMapTypes {
         export type Response = Success & Error
     }
 
+    export namespace ListCard {
+
+        export interface Params {
+            login: string
+            password: string
+        }
+
+        export interface Success {
+            Success: true
+            CardUId: string
+            PANMask: string
+            CardHolder: string
+            Status: 'Active' | 'Other'
+        }
+
+        export interface Error {
+            Success: false,
+            ErrCode: string
+        }
+
+        export type Response = Success & Error
+    }
+
     export namespace CreateUser {
         export interface Params {
             login: string
@@ -57,9 +80,31 @@ export namespace TheMapTypes {
         export type Response = Success & Error
     }
 
-    export namespace CreatePayment {
+    export namespace CreateCard {
         export interface Params {
             SessionGUID: string
+        }
+
+        export interface Success {
+        }
+
+        export interface Error {
+            Success: string
+            ErrCode: string
+            ErrMessage: string
+        }
+
+        export type Response = Success & Error
+    }
+
+    export namespace CreatePayment {
+        export interface Params {
+            orderId: string
+            amount: number
+            userLogin: string
+            userPassword: string
+            successUrl: string
+            failUrl: string
         }
 
         export interface Success {

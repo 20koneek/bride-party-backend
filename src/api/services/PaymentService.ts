@@ -5,19 +5,27 @@ import { Status } from '../types/enums'
 @Service()
 export class PaymentService {
 
-    public all = ({ guestId }: { guestId: string }): Promise<Payment[]> => {
-        return Payment.find({ guestId })
-    }
+    public all = ({ guestId }: { guestId: string }): Promise<Payment[]> => (
+        Payment.find({ guestId })
+    )
+
+    public find = ({ id }: { id: string }): Promise<Payment> => (
+        Payment.findOneOrFail(id)
+    )
 
     public create = ({
-        amount, guestId, conditionId,
+        amount,
+        guestId,
+        conditionId,
     }: {
-        amount: number, guestId: string, conditionId?: string
+        amount: number,
+        guestId: string,
+        conditionId?: string,
     }): Promise<Payment> => {
         const payment = new Payment()
         payment.amount = amount
         payment.guestId = guestId
-        payment.contestConditionId = conditionId
+        conditionId && (payment.contestConditionId = conditionId)
 
         return payment.save()
     }

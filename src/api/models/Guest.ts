@@ -55,6 +55,6 @@ export class Guest extends BaseModel {
     public paymentId: string
 
     public getPassword = (): string => (
-        SHA1(this.salt + this.updatedAt).toString()
+        SHA1(this.salt + this.createdAt).toString()
     )
 }

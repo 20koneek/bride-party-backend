@@ -28,25 +28,24 @@ export class CardResolver {
             amount: 100,
             guestId: currentGuest.id,
         })
+
+        await this.guestService.update(currentGuest.id, { paymentId: payment.id })
+
         const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
         const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
 
-        const { SessionGUID } = await theMap.init({
-            type: 'Add',
-            orderId: payment.id,
-            amount: payment.amount,
-            addCard: true,
-            recurrent: true,
-            userLogin: currentGuest.id,
-            userPassword: currentGuest.getPassword(),
+        const result = theMap.addCard({
             successUrl,
             failUrl,
+            userLogin: currentGuest.id,
+            userPassword: currentGuest.getPassword(),
+            orderId: payment.id,
+            amount: payment.amount,
         })
 
         await this.paymentService.updateStatus(payment.id, Status.Run)
-        await this.guestService.update(currentGuest.id, { paymentId: payment.id })
 
-        return theMap.createPayment({ SessionGUID })
+        return result
     }
 
     @Mutation(() => Guest)
@@ -66,7 +65,7 @@ export class CardResolver {
 
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
-    public updateCard(
+    public async updateCard(
         @Ctx() { currentGuest }: Context,
         @Arg('id') id: string,
         @Arg('status', () => CardStatus) cardStatus: CardStatus,
@@ -75,7 +74,9 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        return this.guestService.updateCardStatus({
+        const status = cardStatus === CardStatus.Confirmed ? Status.Finished : Status.Failed
+        await this.paymentService.updateStatus(currentGuest.paymentId, status)
+        return await this.guestService.updateCardStatus({
             guest: currentGuest,
             cardStatus,
         })

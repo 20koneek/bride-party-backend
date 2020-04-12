@@ -42,6 +42,7 @@ export class GuestResolver {
             login: guest.id,
             password: guest.getPassword(),
         })
+        console.log({ login: guest.id, password: guest.getPassword() })
 
         if (!Success || AlreadyCreated) {
             await guest.remove()

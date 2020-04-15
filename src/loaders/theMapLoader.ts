@@ -8,8 +8,7 @@ export const theMapLoader: MicroframeworkLoader = async (settings: Microframewor
             env.theMap.domain,
             env.theMap.key,
             env.theMap.keyPassword,
-            env.theMap.successUrl,
-            env.theMap.failUrl,
+            env.theMap.hostUrl,
         )
 
         settings.setData('the_map', theMap)

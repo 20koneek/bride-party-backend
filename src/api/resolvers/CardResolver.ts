@@ -1,16 +1,18 @@
-import { Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Guest } from '../types'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
-import { PaymentService } from '../services'
+import { GuestCardService, GuestService, PaymentService } from '../services'
+import { CardStatus, Guest, PaymentStatus } from '../types'
 
 @Service()
-@Resolver(() => Guest)
+@Resolver(() => String)
 export class CardResolver {
 
     constructor(
         private paymentService: PaymentService,
+        private guestService: GuestService,
+        private cardService: GuestCardService,
     ) {
     }
 
@@ -26,22 +28,66 @@ export class CardResolver {
         const payment = await this.paymentService.create({
             amount: 100,
             guestId: currentGuest.id,
-            contestConditionId: '32b3e30e-f519-41fc-b528-1961f570e78a',
         })
 
-        const { SessionGUID } = await theMap.init({
-            type: 'Add',
-            orderId: payment.id,
-            amount: payment.amount,
-            addCard: true,
-            recurrent: true,
+        await this.guestService.update(currentGuest.id, { paymentId: payment.id })
+
+        const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
+        const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
+
+        const result = theMap.addCard({
+            successUrl,
+            failUrl,
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
+            orderId: payment.id,
+            amount: payment.amount,
+            cardUid: '',
         })
 
-        await this.paymentService.run(payment.id)
+        await this.paymentService.updateStatus(payment.id, PaymentStatus.Run)
 
-        return theMap.createPayment({ SessionGUID })
+        return result
+    }
+
+    @Mutation(() => Guest)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public skipCard(
+        @Ctx() { currentGuest }: Context,
+    ): Promise<Guest> {
+        if (!currentGuest) {
+            throw new Error('Not auth')
+        }
+
+        return this.guestService.updateCardStatus({
+            guest: currentGuest,
+            cardStatus: CardStatus.Skipped,
+        })
+    }
+
+    @Mutation(() => Guest)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public async updateCard(
+        @Ctx() { currentGuest, theMap }: Context,
+        @Arg('id') id: string,
+        @Arg('status', () => CardStatus) cardStatus: CardStatus,
+    ): Promise<Guest> {
+        if (!currentGuest) {
+            throw new Error('Not auth')
+        }
+
+        const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
+        const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
+
+        if (response.Success) {
+            await this.cardService.create({ guestId: currentGuest.id, cards: response.Cards })
+        }
+
+        await this.paymentService.updateStatus(currentGuest.paymentId, status)
+        return await this.guestService.updateCardStatus({
+            guest: currentGuest,
+            cardStatus,
+        })
     }
 }
 

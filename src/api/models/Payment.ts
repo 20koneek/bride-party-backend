@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { BaseModel, ContestCondition, Guest } from './'
+import { PaymentStatus } from '../types/enums'
 
 @Entity()
 export class Payment extends BaseModel {
@@ -10,10 +11,11 @@ export class Payment extends BaseModel {
     public amount: number
 
     @IsNotEmpty()
-    @Column({
-        default: () => '\'init\'',
+    @Column('enum', {
+        enum: PaymentStatus,
+        default: () => PaymentStatus.Init,
     })
-    public status: string
+    public status: PaymentStatus
 
     @Column({ name: 'guest_id' })
     public guestId: string
@@ -26,14 +28,17 @@ export class Payment extends BaseModel {
     @JoinColumn({ name: 'guest_id' })
     public guest: Guest
 
-    @Column({ name: 'contest_condition_id' })
-    public contestConditionId: string
+    @Column({
+        name: 'contest_condition_id',
+        nullable: true,
+    })
+    public contestConditionId?: string
 
     @ManyToOne(
         () => ContestCondition,
         ({ payments }) => payments,
-        { lazy: true },
+        { lazy: true, nullable: true },
     )
     @JoinColumn({ name: 'contest_condition_id' })
-    public contestCondition: ContestCondition
+    public contestCondition?: ContestCondition
 }

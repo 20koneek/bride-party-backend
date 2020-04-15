@@ -2,7 +2,8 @@ import { v4 } from 'uuid'
 import { SHA1 } from 'crypto-js'
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
-import { BaseModel, Payment, Wedding } from './'
+import { BaseModel, GuestCard, Payment, Wedding } from './'
+import { CardStatus } from '../types'
 
 @Entity()
 @Index(['uid'], { unique: true })
@@ -25,6 +26,13 @@ export class Guest extends BaseModel {
     @Column()
     public salt: string
 
+    @Column('enum', {
+        name: 'card_status',
+        enum: CardStatus,
+        default: () => `'${CardStatus.NotSet}'`,
+    })
+    public cardStatus: CardStatus
+
     @OneToMany(
         () => Payment,
         ({ guest }) => guest,
@@ -43,7 +51,17 @@ export class Guest extends BaseModel {
     @JoinColumn({ name: 'wedding_id' })
     public wedding: Wedding
 
+    @Column({ name: 'payment_id' })
+    public paymentId: string
+
+    @OneToMany(
+        () => GuestCard,
+        ({ guest }) => guest,
+        { lazy: true },
+    )
+    public cards: GuestCard[]
+
     public getPassword = (): string => (
-        SHA1(this.salt + this.updatedAt).toString()
+        SHA1(this.salt + this.createdAt).toString()
     )
 }

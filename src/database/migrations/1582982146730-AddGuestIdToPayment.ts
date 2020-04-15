@@ -15,7 +15,7 @@ export class AddGuestIdToPayment1582982146730 implements MigrationInterface {
             name: this.status,
             type: 'varchar',
             length: '15',
-            default: '\'init\'',
+            default: '\'Init\'',
         })
 
         const guestForeignKey = new TableForeignKey({

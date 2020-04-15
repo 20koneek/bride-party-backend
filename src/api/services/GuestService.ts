@@ -1,5 +1,7 @@
 import { Service } from 'typedi'
-import { Guest } from '../models'
+import { BaseModel, Guest } from '../models'
+import { CardStatus } from '../types/enums'
+import { UpdateResult } from 'typeorm'
 
 @Service()
 export class GuestService {
@@ -19,4 +21,19 @@ export class GuestService {
 
         return guest.save()
     }
+
+    public updateCardStatus = (
+        { guest, cardStatus }:
+        { guest: Guest, cardStatus: CardStatus },
+    ): Promise<Guest> => {
+        guest.cardStatus = cardStatus
+        return guest.save()
+    }
+
+    public update = (
+        id: string,
+        params: Partial<Omit<Guest, keyof BaseModel>>,
+    ): Promise<UpdateResult> => (
+        Guest.update(id, params)
+    )
 }

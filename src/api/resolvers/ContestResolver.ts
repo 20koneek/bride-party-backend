@@ -1,4 +1,4 @@
-import { Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Contest } from '../types'
 import { ContestService } from '../services'
@@ -24,5 +24,18 @@ export class ContestResolver {
         }
 
         return await this.service.all({ weddingId: currentGuest.weddingId })
+    }
+
+    @Query(() => Contest)
+    @UseMiddleware(CurrentGuestMiddleware)
+    public async currentContest(
+        @Ctx() { currentGuest }: Context,
+        @Arg('id') id: string,
+    ): Promise<Contest> {
+        if (!currentGuest) {
+            throw new Error('not auth')
+        }
+
+        return await this.service.find({ id, weddingId: currentGuest.weddingId })
     }
 }

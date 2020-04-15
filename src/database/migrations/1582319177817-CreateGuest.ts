@@ -17,6 +17,14 @@ export class CreateGuest1582319177817 extends BaseCreateTable {
             name: 'salt',
             type: 'varchar',
             length: '40',
+        }, {
+            name: 'payment_id',
+            type: 'uuid',
+            isNullable: true,
+        }], [{
+            columnNames: ['payment_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'payment',
         }])
 
         const uidIndex = new TableIndex({

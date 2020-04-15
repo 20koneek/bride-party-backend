@@ -12,7 +12,7 @@ export namespace TheMapTypes {
             // Action	Дополнительное действие с заблокированной суммой. «Unblock» - разблокировка	Доступно только для TwoStep	Нет
             recurrent?: boolean
             lifetime?: number
-            cardUId?: string
+            cardUid?: string
             userLogin?: string
             userPassword?: string
             successUrl: string
@@ -36,6 +36,14 @@ export namespace TheMapTypes {
     }
 
     export namespace ListCard {
+        export interface Card {
+            PanMask: string
+            CardUId: string
+            EMonth: number
+            EYear: number
+            Status: 'Active' | 'Other'
+            CardHolder: string
+        }
 
         export interface Params {
             login: string
@@ -44,10 +52,7 @@ export namespace TheMapTypes {
 
         export interface Success {
             Success: true
-            CardUId: string
-            PANMask: string
-            CardHolder: string
-            Status: 'Active' | 'Other'
+            Cards: Card[]
         }
 
         export interface Error {
@@ -105,6 +110,7 @@ export namespace TheMapTypes {
             userPassword: string
             successUrl: string
             failUrl: string
+            cardUid: string
         }
 
         export interface Success {

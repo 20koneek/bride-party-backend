@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { CardStatus, Payment, PaymentInput, Status } from '../types'
+import { Payment, PaymentInput, PaymentStatus } from '../types'
 import { PaymentService } from '../services'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
@@ -26,12 +26,12 @@ export class PaymentResolver {
         return await this.service.all({ guestId: currentGuest.id })
     }
 
-    @Mutation(() => Payment)
+    @Mutation(() => String)
     @UseMiddleware(CurrentGuestMiddleware)
     public async createPayment(
         @Ctx() { currentGuest, theMap }: Context,
         @Arg('input') { amount, conditionId }: PaymentInput,
-    ): Promise<Payment> {
+    ): Promise<string> {
         if (!currentGuest) {
             throw new Error('not auth')
         }
@@ -42,21 +42,27 @@ export class PaymentResolver {
             guestId: currentGuest.id,
         })
 
-        const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
-        const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
+        const successUrl = `guest/payments/${payment.id}/edit?status=${PaymentStatus.Finished}`
+        const failUrl = `guest/payments/${payment.id}/edit?status=${PaymentStatus.Failed}`
+        const card = (await currentGuest.cards).find(({ status }) => status === 'Active')
 
-        await theMap.pay({
+        if (!card) {
+            throw new Error('card not exist')
+        }
+
+        const url = await theMap.pay({
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
             orderId: payment.id,
+            cardUid: card.cardUid,
             amount,
             failUrl,
             successUrl,
         })
 
-        await this.service.updateStatus(payment.id, Status.Run)
+        await this.service.updateStatus(payment.id, PaymentStatus.Run)
 
-        return payment
+        return url
     }
 
     @Mutation(() => Payment)
@@ -64,16 +70,10 @@ export class PaymentResolver {
     public async updatePaymentStatus(
         @Ctx() { currentGuest, theMap }: Context,
         @Arg('id') id: string,
-        @Arg('status', () => Status) status: Status,
+        @Arg('status', () => PaymentStatus) status: PaymentStatus,
     ): Promise<Payment> {
         if (!currentGuest) {
             throw new Error('not auth')
-        }
-        const payment = await this.service.find({ id })
-
-        if (!payment.contestConditionId) {
-            const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
-            console.log(response)
         }
 
         return await this.service.updateStatus(id, status)

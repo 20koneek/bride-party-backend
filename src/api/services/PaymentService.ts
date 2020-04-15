@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 import { Payment } from '../models'
-import { Status } from '../types/enums'
+import { PaymentStatus } from '../types/enums'
 
 @Service()
 export class PaymentService {
@@ -30,7 +30,7 @@ export class PaymentService {
         return payment.save()
     }
 
-    public updateStatus = async (id: string, status: Status): Promise<Payment> => {
+    public updateStatus = async (id: string, status: PaymentStatus): Promise<Payment> => {
         const payment = await Payment.findOneOrFail(id)
         payment.status = status
 

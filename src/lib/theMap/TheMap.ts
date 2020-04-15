@@ -38,19 +38,19 @@ export class TheMap {
     }
 
     private init = async ({
-        orderId,
-        amount,
-        addCard,
-        type,
-        paymentType,
-        recurrent,
-        lifetime,
-        cardUId,
-        userLogin,
-        userPassword,
-        successUrl,
-        failUrl,
-    }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
+                              orderId,
+                              amount,
+                              addCard,
+                              type,
+                              paymentType,
+                              recurrent,
+                              lifetime,
+                              cardUid,
+                              userLogin,
+                              userPassword,
+                              successUrl,
+                              failUrl,
+                          }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Password', this.password)
@@ -62,7 +62,7 @@ export class TheMap {
         paymentType && createParams.set('PaymentType', paymentType)
         recurrent && createParams.set('Recurrent', recurrent.toString())
         lifetime && createParams.set('Lifetime', lifetime.toString())
-        cardUId && createParams.set('CardUId', cardUId)
+        cardUid && createParams.set('CardUId', cardUid)
         userLogin && createParams.set('UserLogin', userLogin)
         userPassword && createParams.set('UserPassword', userPassword)
 
@@ -70,9 +70,9 @@ export class TheMap {
     }
 
     public listCard = async ({
-        login,
-        password,
-    }: TheMapTypes.ListCard.Params): Promise<TheMapTypes.ListCard.Response> => {
+                                 login,
+                                 password,
+                             }: TheMapTypes.ListCard.Params): Promise<TheMapTypes.ListCard.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Login', login)
@@ -113,7 +113,7 @@ export class TheMap {
         return this.createPayment({ SessionGUID })
     }
 
-    public pay = async ({ amount, failUrl, orderId, successUrl, userLogin, userPassword }: TheMapTypes.CreatePayment.Params): Promise<string> => {
+    public pay = async ({ amount, failUrl, orderId, successUrl, userLogin, userPassword, cardUid }: TheMapTypes.CreatePayment.Params): Promise<string> => {
         const { SessionGUID } = await this.init({
             type: 'Pay',
             orderId,
@@ -122,6 +122,7 @@ export class TheMap {
             userPassword,
             successUrl,
             failUrl,
+            cardUid,
         })
 
         return this.createPayment({ SessionGUID })

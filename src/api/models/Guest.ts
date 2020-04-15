@@ -2,7 +2,7 @@ import { v4 } from 'uuid'
 import { SHA1 } from 'crypto-js'
 import { IsNotEmpty } from 'class-validator'
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
-import { BaseModel, Payment, Wedding } from './'
+import { BaseModel, GuestCard, Payment, Wedding } from './'
 import { CardStatus } from '../types'
 
 @Entity()
@@ -53,6 +53,13 @@ export class Guest extends BaseModel {
 
     @Column({ name: 'payment_id' })
     public paymentId: string
+
+    @OneToMany(
+        () => GuestCard,
+        ({ guest }) => guest,
+        { lazy: true },
+    )
+    public cards: GuestCard[]
 
     public getPassword = (): string => (
         SHA1(this.salt + this.createdAt).toString()

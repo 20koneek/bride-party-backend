@@ -1,14 +1,14 @@
 import { registerEnumType } from 'type-graphql'
 
-export enum Status {
+export enum PaymentStatus {
     Init = 'Init',
     Run = 'Run',
     Failed = 'Failed',
     Finished = 'Finished',
 }
 
-registerEnumType(Status, {
-    name: 'Status',
+registerEnumType(PaymentStatus, {
+    name: 'PaymentStatus',
 })
 
 export enum CardStatus {

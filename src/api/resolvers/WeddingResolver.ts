@@ -17,14 +17,11 @@ export class WeddingResolver {
     @Query(() => Wedding)
     @UseMiddleware(CurrentGuestMiddleware)
     public async currentWedding(
-        @Ctx() { currentGuest, theMap }: Context,
+        @Ctx() { currentGuest }: Context,
     ): Promise<Wedding> {
         if (!currentGuest) {
             throw new Error('not auth')
         }
-
-        const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
-        console.log(response)
 
         return currentGuest.wedding
     }

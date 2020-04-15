@@ -2,8 +2,8 @@ import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
-import { GuestService, PaymentService } from '../services'
-import { CardStatus, Guest, Status } from '../types'
+import { GuestCardService, GuestService, PaymentService } from '../services'
+import { CardStatus, Guest, PaymentStatus } from '../types'
 
 @Service()
 @Resolver(() => String)
@@ -12,6 +12,7 @@ export class CardResolver {
     constructor(
         private paymentService: PaymentService,
         private guestService: GuestService,
+        private cardService: GuestCardService,
     ) {
     }
 
@@ -41,9 +42,10 @@ export class CardResolver {
             userPassword: currentGuest.getPassword(),
             orderId: payment.id,
             amount: payment.amount,
+            cardUid: '',
         })
 
-        await this.paymentService.updateStatus(payment.id, Status.Run)
+        await this.paymentService.updateStatus(payment.id, PaymentStatus.Run)
 
         return result
     }
@@ -66,7 +68,7 @@ export class CardResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public async updateCard(
-        @Ctx() { currentGuest }: Context,
+        @Ctx() { currentGuest, theMap }: Context,
         @Arg('id') id: string,
         @Arg('status', () => CardStatus) cardStatus: CardStatus,
     ): Promise<Guest> {
@@ -74,7 +76,13 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        const status = cardStatus === CardStatus.Confirmed ? Status.Finished : Status.Failed
+        const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
+        const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
+
+        if (response.Success) {
+            await this.cardService.create({ guestId: currentGuest.id, cards: response.Cards })
+        }
+
         await this.paymentService.updateStatus(currentGuest.paymentId, status)
         return await this.guestService.updateCardStatus({
             guest: currentGuest,

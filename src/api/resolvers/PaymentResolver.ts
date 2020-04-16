@@ -42,8 +42,8 @@ export class PaymentResolver {
             guestId: currentGuest.id,
         })
 
-        const successUrl = `guest/payments/${payment.id}/edit?status=${PaymentStatus.Finished}`
-        const failUrl = `guest/payments/${payment.id}/edit?status=${PaymentStatus.Failed}`
+        const successUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Finished}`
+        const failUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Failed}`
         const card = (await currentGuest.cards).find(({ status }) => status === 'Active')
 
         if (!card) {

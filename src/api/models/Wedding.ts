@@ -1,6 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm'
 import { IsNotEmpty } from 'class-validator'
-import { BaseModel, Contest, Guest } from './'
+import { BaseModel, Contest, Feed, Guest } from './'
 
 @Entity()
 export class Wedding extends BaseModel {
@@ -31,4 +31,11 @@ export class Wedding extends BaseModel {
         },
     })
     public contests: Contest[]
+
+    @OneToOne(
+        () => Feed,
+        ({ wedding }) => wedding,
+        { lazy: true },
+    )
+    public feed: Feed
 }

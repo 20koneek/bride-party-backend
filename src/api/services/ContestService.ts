@@ -1,20 +1,35 @@
 import { Service } from 'typedi'
-import { Contest } from '../models'
+import { Contest, ContestCondition, Wedding } from '../models'
 
 @Service()
 export class ContestService {
 
     public all = ({ weddingId }: { weddingId: string }): Promise<Contest[]> => (
-        Contest.find({
-            relations: ['weddings'],
-            where: `"Contest__weddings"."id" = '${weddingId}'`,
+        Contest.findAll({
+            include: [
+                ContestCondition,
+                {
+                    model: Wedding,
+                    through: {
+                        where: { id: weddingId },
+                    },
+                },
+            ],
         })
     )
 
     public find = ({ id, weddingId }: { id: string, weddingId: string }): Promise<Contest> => (
-        Contest.findOneOrFail({
-            relations: ['weddings'],
-            where: `"Contest"."id" = '${id}' and "Contest__weddings"."id" = '${weddingId}'`,
+        Contest.findOne({
+            include: [
+                ContestCondition,
+                {
+                    model: Wedding,
+                    through: {
+                        where: { id: weddingId },
+                    },
+                },
+            ],
+            where: { id },
         })
     )
 }

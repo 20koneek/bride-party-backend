@@ -5,7 +5,6 @@ import * as path from 'path'
 import { buildSchema } from 'type-graphql'
 import Container, { Container as SchemaContainer } from 'typedi'
 import { env } from '../env'
-import { getErrorCode, getErrorMessage, handlingErrors } from '../lib/graphql'
 import { Context } from '../types/Context'
 import { app } from 'firebase-admin'
 import { TheMap } from '../lib/theMap'
@@ -22,8 +21,6 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
             emitSchemaFile: path.resolve(__dirname, '../api', 'schema.gql'),
         })
 
-        handlingErrors(schema)
-
         expressApp.use(env.graphql.route, (request: Request, response: Response) => {
             const token = `${request.headers.token}`
             const requestId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
@@ -36,6 +33,7 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
                 token,
                 firebase,
                 theMap,
+                currentGuest: null,
             }
 
             container.set('context', context)
@@ -44,11 +42,6 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
                 schema,
                 context,
                 graphiql: env.graphql.editor,
-                customFormatErrorFn: (error) => ({
-                    code: getErrorCode(error.message),
-                    message: getErrorMessage(error.message),
-                    path: error.path,
-                }),
             })(request, response)
         })
     }

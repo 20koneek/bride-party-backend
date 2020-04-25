@@ -9,7 +9,6 @@ import { graphqlLoader } from './loaders/graphqlLoader'
 import { homeLoader } from './loaders/homeLoader'
 import { iocLoader } from './loaders/iocLoader'
 import { publicLoader } from './loaders/publicLoader'
-import { typeormLoader } from './loaders/typeormLoader'
 import { winstonLoader } from './loaders/winstonLoader'
 import { firebaseLoader } from './loaders/firebaseLoader'
 import { theMapLoader } from './loaders/theMapLoader'
@@ -23,7 +22,6 @@ bootstrapMicroframework({
         eventDispatchLoader,
         firebaseLoader,
         theMapLoader,
-        typeormLoader,
         expressLoader,
         homeLoader,
         publicLoader,

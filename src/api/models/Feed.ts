@@ -1,26 +1,16 @@
-import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, JoinColumn,  OneToMany, OneToOne } from 'typeorm'
-import { BaseModel, Post, Wedding } from './'
+import { BelongsTo, Column, ForeignKey, HasMany, Table } from 'sequelize-typescript'
+import { BaseModel, Post, UUIDColumn, Wedding } from './'
 
-@Entity()
-export class Feed extends BaseModel {
+@Table
+export class Feed extends BaseModel<Feed> {
 
-    @Column({ name: 'wedding_id' })
-    @IsNotEmpty()
+    @ForeignKey(() => Wedding)
+    @Column(UUIDColumn)
     public weddingId: string
 
-    @OneToOne(
-        () => Wedding,
-        ({ feed }) => feed,
-        { lazy: true },
-    )
-    @JoinColumn({ name: 'wedding_id' })
+    @BelongsTo(() => Wedding)
     public wedding: Wedding
 
-    @OneToMany(
-        () => Post,
-        ({ feed }) => feed,
-        { lazy: true },
-    )
+    @HasMany(() => Post)
     public posts: Post[]
 }

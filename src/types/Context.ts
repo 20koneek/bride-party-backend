@@ -12,6 +12,6 @@ export interface Context {
     token?: string
     firebase: app.App
     theMap: TheMap
-    currentGuest?: Guest
+    currentGuest: Guest | null
     uid?: string
 }

@@ -6,18 +6,18 @@ import { PaymentStatus } from '../types/enums'
 export class PaymentService {
 
     public all = ({ guestId }: { guestId: string }): Promise<Payment[]> => (
-        Payment.find({ guestId })
+        Payment.findAll({ where: { guestId } })
     )
 
     public find = ({ id }: { id: string }): Promise<Payment> => (
-        Payment.findOneOrFail(id)
+        Payment.findByPk(id)
     )
 
     public create = ({
-        amount,
-        guestId,
-        conditionId,
-    }: {
+                         amount,
+                         guestId,
+                         conditionId,
+                     }: {
         amount: number,
         guestId: string,
         conditionId?: string,
@@ -25,15 +25,20 @@ export class PaymentService {
         const payment = new Payment()
         payment.amount = amount
         payment.guestId = guestId
-        conditionId && (payment.contestConditionId = conditionId)
+        // conditionId && (payment.contestConditionId = conditionId)
 
         return payment.save()
     }
 
     public updateStatus = async (id: string, status: PaymentStatus): Promise<Payment> => {
-        const payment = await Payment.findOneOrFail(id)
+        const payment = await Payment.findByPk(id)
+
+        if (!payment) {
+            throw new Error('notFound')
+        }
+
         payment.status = status
 
-        return await payment.save()
+        return payment.save()
     }
 }

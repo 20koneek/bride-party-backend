@@ -1,71 +1,61 @@
 import { v4 } from 'uuid'
 import { SHA1 } from 'crypto-js'
-import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
+import {
+    BelongsTo,
+    Column,
+    DataType,
+    Default,
+    ForeignKey,
+    HasMany,
+    Index,
+    Table,
+} from 'sequelize-typescript'
+import { CardStatus } from '../types/enums'
 import { BaseModel, GuestCard, Payment, Post, Wedding } from './'
-import { CardStatus } from '../types'
 
-@Entity()
-@Index(['uid'], { unique: true })
-export class Guest extends BaseModel {
+@Table
+export class Guest extends BaseModel<Guest> {
 
-    constructor() {
-        super()
-        this.salt = SHA1(v4()).toString()
+    constructor(...args) {
+        super(...args)
+
+        if (!this.salt) {
+            this.salt = SHA1(v4()).toString()
+        }
     }
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public name: string
 
-    @IsNotEmpty()
-    @Column()
+    @Index({ unique: true })
+    @Column({ allowNull: false })
     public uid: string
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public salt: string
 
-    @Column('enum', {
-        name: 'card_status',
-        enum: CardStatus,
-        default: () => `'${CardStatus.NotSet}'`,
-    })
+    @Default(CardStatus.NotSet)
+    @Column(DataType.ENUM({ values: Object.keys(CardStatus) }))
     public cardStatus: CardStatus
 
-    @OneToMany(
-        () => Payment,
-        ({ guest }) => guest,
-        { lazy: true },
-    )
-    public payments: Payment[]
-
-    @Column({ name: 'wedding_id' })
+    @ForeignKey(() => Wedding)
+    @Column({
+        allowNull: false,
+        type: DataType.UUID,
+        defaultValue: DataType.UUIDV4,
+    })
     public weddingId: string
 
-    @ManyToOne(
-        () => Wedding,
-        ({ guests }) => guests,
-        { lazy: true },
-    )
-    @JoinColumn({ name: 'wedding_id' })
+    @BelongsTo(() => Wedding)
     public wedding: Wedding
 
-    @Column({ name: 'payment_id' })
-    public paymentId: string
+    @HasMany(() => Payment)
+    public payments: Payment[]
 
-    @OneToMany(
-        () => GuestCard,
-        ({ guest }) => guest,
-        { lazy: true },
-    )
+    @HasMany(() => GuestCard)
     public cards: GuestCard[]
 
-    @OneToMany(
-        () => Post,
-        ({ guest }) => guest,
-        { lazy: true },
-    )
+    @HasMany(() => Post)
     public posts: Post[]
 
     public getPassword = (): string => (

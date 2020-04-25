@@ -16,19 +16,19 @@ export class ContestResolver {
 
     @Query(() => [Contest])
     @UseMiddleware(CurrentGuestMiddleware)
-    public async currentContests(
+    public currentContests(
         @Ctx() { currentGuest }: Context,
     ): Promise<Contest[]> {
         if (!currentGuest) {
             throw new Error('not auth')
         }
 
-        return await this.service.all({ weddingId: currentGuest.weddingId })
+        return this.service.all({ weddingId: currentGuest.weddingId })
     }
 
     @Query(() => Contest)
     @UseMiddleware(CurrentGuestMiddleware)
-    public async currentContest(
+    public currentContest(
         @Ctx() { currentGuest }: Context,
         @Arg('id') id: string,
     ): Promise<Contest> {
@@ -36,6 +36,6 @@ export class ContestResolver {
             throw new Error('not auth')
         }
 
-        return await this.service.find({ id, weddingId: currentGuest.weddingId })
+        return this.service.find({ id, weddingId: currentGuest.weddingId })
     }
 }

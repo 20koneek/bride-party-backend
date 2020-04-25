@@ -1,42 +1,35 @@
-import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { BelongsTo, Column, DataType, ForeignKey, Table } from 'sequelize-typescript'
 import { BaseModel, Guest } from './'
 
-@Entity({ name: 'guest_card' })
-export class GuestCard extends BaseModel {
+@Table
+export class GuestCard extends BaseModel<GuestCard> {
 
-    @IsNotEmpty()
-    @Column({ name: 'pan_mask' })
+    @Column({ allowNull: false })
     public panMask: string
 
-    @IsNotEmpty()
-    @Column({ name: 'card_uid' })
+    @Column({ allowNull: false })
     public cardUid: string
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public month: number
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public year: number
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public status: string
 
-    @IsNotEmpty()
-    @Column({ name: 'card_holder' })
+    @Column({ allowNull: false })
     public cardHolder: string
 
-    @Column({ name: 'guest_id' })
+    @ForeignKey(() => Guest)
+    @Column({
+        allowNull: false,
+        type: DataType.UUID,
+        defaultValue: DataType.UUIDV4,
+    })
     public guestId: string
 
-    @ManyToOne(
-        () => Guest,
-        ({ cards }) => cards,
-        { lazy: true },
-    )
-    @JoinColumn({ name: 'guest_id' })
+    @BelongsTo(() => Guest)
     public guest: Guest
 }

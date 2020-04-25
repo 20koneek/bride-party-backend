@@ -1,18 +1,21 @@
 import { Service } from 'typedi'
-import { BaseModel, Guest } from '../models'
+import { Guest } from '../models'
 import { CardStatus } from '../types/enums'
-import { UpdateResult } from 'typeorm'
 
 @Service()
 export class GuestService {
 
-    public find = (uid: string): Promise<Guest | undefined> => (
-        Guest.findOne({ uid })
+    public find = (uid: string): Promise<Guest | null> => (
+        Guest.findByPk(uid, {
+            // include: [{
+            //     model: Payment,
+            // }],
+        })
     )
 
     public create = (
         { name, uid, weddingId }:
-        { name: string, uid: string, weddingId: string },
+            { name: string, uid: string, weddingId: string },
     ): Promise<Guest> => {
         const guest = new Guest()
         guest.name = name
@@ -24,16 +27,24 @@ export class GuestService {
 
     public updateCardStatus = (
         { guest, cardStatus }:
-        { guest: Guest, cardStatus: CardStatus },
+            { guest: Guest, cardStatus: CardStatus },
     ): Promise<Guest> => {
         guest.cardStatus = cardStatus
         return guest.save()
     }
 
-    public update = (
+    public update = async (
         id: string,
-        params: Partial<Omit<Guest, keyof BaseModel>>,
-    ): Promise<UpdateResult> => (
-        Guest.update(id, params)
-    )
+        params: Partial<Omit<Guest, 'id'>>,
+    ): Promise<Guest> => {
+        const guest = await Guest.findByPk(id)
+
+        if (!guest) {
+            throw  new Error('not found')
+        }
+
+        Object.keys(params).forEach((key) => guest[key] = params[key])
+
+        return guest.save()
+    }
 }

@@ -1,9 +1,37 @@
-export { BaseModel } from './BaseModel'
-export { Guest } from './Guest'
-export { Payment } from './Payment'
-export { Wedding } from './Wedding'
-export { Contest } from './Contest'
-export { ContestCondition } from './ContestCondition'
-export { GuestCard } from './GuestCard'
-export { Feed } from './Feed'
-export { Post } from './Post'
+import { sequelize } from '../../database/sequelize'
+import { BaseModel, UUIDColumn } from './BaseModel'
+import { Contest } from './Contest'
+import { ContestCondition } from './ContestCondition'
+import { ContestWedding } from './ContestWedding'
+import { Feed } from './Feed'
+import { Guest } from './Guest'
+import { GuestCard } from './GuestCard'
+import { Payment } from './Payment'
+import { Post } from './Post'
+import { Wedding } from './Wedding'
+
+sequelize.addModels([
+    Contest,
+    ContestCondition,
+    ContestWedding,
+    Feed,
+    Guest,
+    GuestCard,
+    Payment,
+    Post,
+    Wedding,
+])
+
+export {
+    BaseModel,
+    UUIDColumn,
+    Contest,
+    ContestCondition,
+    ContestWedding,
+    Feed,
+    Guest,
+    GuestCard,
+    Payment,
+    Post,
+    Wedding,
+}

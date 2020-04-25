@@ -44,7 +44,7 @@ export class GuestResolver {
         })
 
         if (!Success || AlreadyCreated) {
-            await guest.remove()
+            await guest.destroy()
             throw new Error('no created')
         }
 

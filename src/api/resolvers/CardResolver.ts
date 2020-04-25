@@ -30,7 +30,7 @@ export class CardResolver {
             guestId: currentGuest.id,
         })
 
-        await this.guestService.update(currentGuest.id, { paymentId: payment.id })
+        // await this.guestService.update(currentGuest.id, { paymentId: payment.id })
 
         const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
         const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
@@ -76,14 +76,14 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
+        // const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
         const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
 
         if (response.Success) {
             await this.cardService.create({ guestId: currentGuest.id, cards: response.Cards })
         }
 
-        await this.paymentService.updateStatus(currentGuest.paymentId, status)
+        // await this.paymentService.updateStatus(currentGuest.paymentId, status)
         return await this.guestService.updateCardStatus({
             guest: currentGuest,
             cardStatus,

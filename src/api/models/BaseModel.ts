@@ -1,26 +1,14 @@
-import { Moment } from 'moment'
-import { IsNotEmpty } from 'class-validator'
-import { BaseEntity, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm'
+import { Column, Model, DataType, PrimaryKey, Default } from 'sequelize-typescript'
 
-@Entity()
-export abstract class BaseModel extends BaseEntity {
+export const UUIDColumn = {
+    allowNull: false,
+    type: DataType.UUID,
+}
 
-    @PrimaryColumn('uuid', { default: () => 'uuid_generate_v4()' })
+export class BaseModel<T> extends Model<T> {
+
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column(UUIDColumn)
     public id: string
-
-    @IsNotEmpty()
-    @CreateDateColumn({
-        name: 'created_at',
-        type: 'timestamp',
-        default: () => 'LOCALTIMESTAMP',
-    })
-    public createdAt: Moment
-
-    @IsNotEmpty()
-    @UpdateDateColumn({
-        name: 'updated_at',
-        type: 'timestamp',
-        default: () => 'LOCALTIMESTAMP',
-    })
-    public updatedAt: Moment
 }

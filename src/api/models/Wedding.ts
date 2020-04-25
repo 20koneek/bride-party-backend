@@ -1,41 +1,18 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm'
-import { IsNotEmpty } from 'class-validator'
-import { BaseModel, Contest, Feed, Guest } from './'
+import { BelongsToMany, Column, HasMany, HasOne, Table } from 'sequelize-typescript'
+import { BaseModel, Contest, ContestWedding, Feed, Guest } from './'
 
-@Entity()
-export class Wedding extends BaseModel {
+@Table
+export class Wedding extends BaseModel<Wedding> {
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public name: string
 
-    @OneToMany(
-        () => Guest,
-        ({ wedding }) => wedding,
-        { lazy: true },
-    )
+    @HasMany(() => Guest)
     public guests: Guest[]
 
-    @ManyToMany(
-        () => Contest,
-        ({ weddings }) => weddings,
-        { lazy: true },
-    )
-    @JoinTable({
-        name: 'contest_wedding',
-        joinColumn: {
-            name: 'wedding_id',
-        },
-        inverseJoinColumn: {
-            name: 'contest_id',
-        },
-    })
+    @BelongsToMany(() => Contest, () => ContestWedding)
     public contests: Contest[]
 
-    @OneToOne(
-        () => Feed,
-        ({ wedding }) => wedding,
-        { lazy: true },
-    )
+    @HasOne(() => Feed)
     public feed: Feed
 }

@@ -1,34 +1,15 @@
-import { IsNotEmpty } from 'class-validator'
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
-import { BaseModel, ContestCondition, Wedding } from './'
+import { Column, Table, HasMany, BelongsToMany } from 'sequelize-typescript'
+import { BaseModel, ContestCondition, ContestWedding, Wedding } from './'
 
-@Entity()
-export class Contest extends BaseModel {
+@Table
+export class Contest extends BaseModel<Contest> {
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ allowNull: false })
     public name: string
 
-    @OneToMany(
-        () => ContestCondition,
-        ({ contest }) => contest,
-        { lazy: true },
-    )
+    @HasMany(() => ContestCondition)
     public conditions: ContestCondition[]
 
-    @ManyToMany(
-        () => Wedding,
-        ({ contests }) => contests,
-        { lazy: true },
-    )
-    @JoinTable({
-        name: 'contest_wedding',
-        joinColumn: {
-            name: 'contest_id',
-        },
-        inverseJoinColumn: {
-            name: 'wedding_id',
-        },
-    })
+    @BelongsToMany(() => Wedding, () => ContestWedding)
     public weddings: Wedding[]
 }

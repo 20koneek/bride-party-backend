@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql'
-import { CardStatus } from './'
+import { GuestCard } from './'
 
 @ObjectType()
 export class Guest {
@@ -10,6 +10,6 @@ export class Guest {
     @Field()
     public name: string
 
-    @Field(() => CardStatus)
-    public cardStatus: CardStatus
+    @Field(() => GuestCard, { nullable: true })
+    public card?: GuestCard
 }

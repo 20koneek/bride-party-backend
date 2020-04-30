@@ -1,27 +1,32 @@
 import { Service } from 'typedi'
-import { GuestCard } from '../models'
-import { TheMapTypes } from '../../lib/theMap'
+import { Guest, GuestCard, Payment } from '../models'
 
 @Service()
 export class GuestCardService {
 
-    public create = ({
-        guestId, cards,
-    }: {
-        guestId: string, cards: TheMapTypes.ListCard.Card[],
-    }): Promise<GuestCard[]> => {
-        const guestCards = cards.map(({ CardHolder, CardUId, EMonth, EYear, PanMask, Status }) => (
-            new GuestCard({
-                guestId: guestId,
-                cardHolder: CardHolder,
-                cardUid: CardUId,
-                month: EMonth,
-                year: EYear,
-                panMask: PanMask,
-                status: Status,
-            })
-        ))
+    public create = async (guest: Guest): Promise<Payment> => {
+        const card = await GuestCard.create({ guestId: guest.id })
 
-        return GuestCard.bulkCreate(guestCards)
+        return Payment.create({
+            amount: 100,
+            guestId: guest.id,
+            paymentableId: card.id,
+            paymentableType: GuestCard.name,
+        })
+    }
+
+    public update = async (
+        id: string,
+        // params: Partial<Omit<Guest, 'id'>>,
+    ): Promise<Guest> => {
+        const guest = await Guest.findByPk(id)
+
+        if (!guest) {
+            throw  new Error('not found')
+        }
+
+        // Object.keys(params).forEach((key) => guest[key] = params[key])
+
+        return guest.save()
     }
 }

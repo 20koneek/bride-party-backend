@@ -1,35 +1,28 @@
-import { BelongsTo, Column, DataType, ForeignKey, Table } from 'sequelize-typescript'
-import { BaseModel, Guest } from './'
+import { BelongsTo, Column, Default, ForeignKey, HasOne, Table } from 'sequelize-typescript'
+import { BaseModel, CardInfo, ENUMDataType, Guest, Payment, Paymentable, UUIDColumn } from './'
+import { CardStatus } from '../types/enums'
 
 @Table
 export class GuestCard extends BaseModel<GuestCard> {
 
-    @Column({ allowNull: false })
-    public panMask: string
-
-    @Column({ allowNull: false })
-    public cardUid: string
-
-    @Column({ allowNull: false })
-    public month: number
-
-    @Column({ allowNull: false })
-    public year: number
-
-    @Column({ allowNull: false })
-    public status: string
-
-    @Column({ allowNull: false })
-    public cardHolder: string
+    @Default(CardStatus.Init)
+    @Column(ENUMDataType(CardStatus))
+    public status: CardStatus
 
     @ForeignKey(() => Guest)
-    @Column({
-        allowNull: false,
-        type: DataType.UUID,
-        defaultValue: DataType.UUIDV4,
-    })
+    @Column(UUIDColumn)
     public guestId: string
+
+    @ForeignKey(() => CardInfo)
+    @Column({ ...UUIDColumn, allowNull: true })
+    public cardInfoId?: string
 
     @BelongsTo(() => Guest)
     public guest: Guest
+
+    @BelongsTo(() => CardInfo)
+    public cardInfo?: CardInfo
+
+    @HasOne(() => Payment, Paymentable(GuestCard))
+    public payment: Payment
 }

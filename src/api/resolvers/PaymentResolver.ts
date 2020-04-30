@@ -4,6 +4,7 @@ import { Payment, PaymentInput, PaymentStatus } from '../types'
 import { PaymentService } from '../services'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
+import { ContestCondition } from '../models'
 
 @Service()
 @Resolver(() => Payment)
@@ -38,13 +39,15 @@ export class PaymentResolver {
 
         const payment = await this.service.create({
             amount,
-            conditionId,
             guestId: currentGuest.id,
+            paymentableId: conditionId,
+            paymentableType: ContestCondition.name,
         })
 
         const successUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Finished}`
         const failUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Failed}`
-        const card = (await currentGuest.cards).find(({ status }) => status === 'Active')
+
+        const card = await currentGuest.card
 
         if (!card) {
             throw new Error('card not exist')
@@ -54,13 +57,13 @@ export class PaymentResolver {
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
             orderId: payment.id,
-            cardUid: card.cardUid,
+            cardUid: 'cardInfo.cardUid',
             amount,
             failUrl,
             successUrl,
         })
 
-        await this.service.updateStatus(payment.id, PaymentStatus.Run)
+        await this.service.updateStatus(payment, PaymentStatus.Run)
 
         return url
     }

@@ -11,11 +11,12 @@ registerEnumType(PaymentStatus, {
     name: 'PaymentStatus',
 })
 
+
 export enum CardStatus {
-    NotSet = 'NotSet',
+    Init = 'Init',
+    Skipped = 'Skipped',
     Confirmed = 'Confirmed',
     Failed = 'Failed',
-    Skipped = 'Skipped',
 }
 
 registerEnumType(CardStatus, {

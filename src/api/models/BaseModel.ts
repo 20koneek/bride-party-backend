@@ -5,6 +5,15 @@ export const UUIDColumn = {
     type: DataType.UUID,
 }
 
+export const ENUMDataType = (ENUM) => (
+    DataType.ENUM({ values: Object.keys(ENUM) })
+)
+
+export const Paymentable = ({ name }: Function) => ({
+    scope: { paymentableType: name },
+    foreignKey: 'paymentableId',
+})
+
 export class BaseModel<T> extends Model<T> {
 
     @PrimaryKey

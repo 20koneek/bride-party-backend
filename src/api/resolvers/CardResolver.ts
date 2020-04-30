@@ -2,8 +2,9 @@ import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Context } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
-import { GuestCardService, GuestService, PaymentService } from '../services'
-import { CardStatus, Guest, PaymentStatus } from '../types'
+import { CardStatus, PaymentStatus } from '../types/enums'
+import { CardInfoService, GuestCardService, PaymentService } from '../services'
+import { Guest } from '../types'
 
 @Service()
 @Resolver(() => String)
@@ -11,8 +12,8 @@ export class CardResolver {
 
     constructor(
         private paymentService: PaymentService,
-        private guestService: GuestService,
         private cardService: GuestCardService,
+        private cardInfoService: CardInfoService,
     ) {
     }
 
@@ -25,12 +26,7 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        const payment = await this.paymentService.create({
-            amount: 100,
-            guestId: currentGuest.id,
-        })
-
-        // await this.guestService.update(currentGuest.id, { paymentId: payment.id })
+        const payment = await this.cardService.create(currentGuest)
 
         const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
         const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
@@ -52,17 +48,22 @@ export class CardResolver {
 
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
-    public skipCard(
+    public async skipCard(
         @Ctx() { currentGuest }: Context,
     ): Promise<Guest> {
         if (!currentGuest) {
             throw new Error('Not auth')
         }
 
-        return this.guestService.updateCardStatus({
-            guest: currentGuest,
-            cardStatus: CardStatus.Skipped,
-        })
+        const card = currentGuest.card
+
+        if (card) {
+            card.status = CardStatus.Skipped
+
+            await card.save()
+        }
+
+        return currentGuest.reload()
     }
 
     @Mutation(() => Guest)
@@ -76,18 +77,25 @@ export class CardResolver {
             throw new Error('Not auth')
         }
 
-        // const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
+        const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
         const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
+        const card = currentGuest.card
 
-        if (response.Success) {
-            await this.cardService.create({ guestId: currentGuest.id, cards: response.Cards })
+        if (card) {
+            const payment = await card.$get('payment')
+
+            if (payment) {
+                if (response.Success) {
+                    const cardInfo = await this.cardInfoService.create(response.Cards[0])
+                    await this.paymentService.updateStatus(payment, status)
+                    card.cardInfoId = cardInfo.id
+                    card.status = cardStatus
+                    await card.save()
+                }
+            }
         }
 
-        // await this.paymentService.updateStatus(currentGuest.paymentId, status)
-        return await this.guestService.updateCardStatus({
-            guest: currentGuest,
-            cardStatus,
-        })
+        return currentGuest.reload()
     }
 }
 

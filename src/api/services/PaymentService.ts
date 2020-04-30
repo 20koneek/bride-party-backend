@@ -13,25 +13,17 @@ export class PaymentService {
         Payment.findByPk(id)
     )
 
-    public create = ({
-                         amount,
-                         guestId,
-                         conditionId,
-                     }: {
+    public create = (params: {
         amount: number,
         guestId: string,
-        conditionId?: string,
-    }): Promise<Payment> => {
-        const payment = new Payment()
-        payment.amount = amount
-        payment.guestId = guestId
-        // conditionId && (payment.contestConditionId = conditionId)
+        paymentableId: string,
+        paymentableType: string,
+    }): Promise<Payment> => (
+        Payment.create(params)
+    )
 
-        return payment.save()
-    }
-
-    public updateStatus = async (id: string, status: PaymentStatus): Promise<Payment> => {
-        const payment = await Payment.findByPk(id)
+    public updateStatus = async (data: Payment | string, status: PaymentStatus): Promise<Payment> => {
+        const payment = typeof data === 'string' ? await Payment.findByPk(data) : data
 
         if (!payment) {
             throw new Error('notFound')

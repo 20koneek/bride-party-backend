@@ -3,6 +3,7 @@ import { Service } from 'typedi'
 import { Wedding } from '../types'
 import { CurrentGuestMiddleware } from './middlewares'
 import { Context } from '../../types/Context'
+import { Contest, ContestCondition } from '../models'
 
 @Service()
 @Resolver(() => Wedding)
@@ -17,6 +18,20 @@ export class WeddingResolver {
             throw new Error('not auth')
         }
 
-        return currentGuest.wedding
+        const wedding = await currentGuest.$get(
+            'wedding',
+            {
+                include: [{
+                    model: Contest,
+                    include: [ContestCondition],
+                }],
+            },
+        )
+
+        if (!wedding) {
+            throw new Error('not found')
+        }
+
+        return wedding
     }
 }

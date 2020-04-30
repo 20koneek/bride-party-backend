@@ -3,14 +3,13 @@ import {
     BelongsTo,
     Column,
     createIndexDecorator,
-    DataType,
     Default,
     ForeignKey,
     Index,
     Table,
 } from 'sequelize-typescript'
 import { PaymentStatus } from '../types/enums'
-import { BaseModel, Guest, UUIDColumn } from './'
+import { BaseModel, ENUMDataType, Guest, UUIDColumn } from './'
 
 const GroupIndex = createIndexDecorator({ type: 'FULLTEXT' })
 
@@ -22,7 +21,7 @@ export class Payment extends BaseModel<Payment> {
 
     @Default(PaymentStatus.Init)
     @AllowNull(false)
-    @Column(DataType.ENUM({ values: Object.keys(PaymentStatus) }))
+    @Column(ENUMDataType(PaymentStatus))
     public status: PaymentStatus
 
     @ForeignKey(() => Guest)

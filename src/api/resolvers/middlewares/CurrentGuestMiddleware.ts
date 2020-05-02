@@ -19,17 +19,6 @@ export class CurrentGuestMiddleware implements MiddlewareInterface<Context> {
         context.uid = uid
         context.currentGuest = await this.service.find(uid)
 
-        const guest = await this.service.find(uid)
-
-        if (guest) {
-            const card = guest.card
-
-            if (card) {
-                console.log('====================================')
-                console.log(await card.$get('payment'))
-            }
-        }
-
         return next()
     }
 }

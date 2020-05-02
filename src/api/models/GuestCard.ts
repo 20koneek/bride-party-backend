@@ -21,7 +21,7 @@ export class GuestCard extends BaseModel<GuestCard> {
     public guest: Guest
 
     @BelongsTo(() => CardInfo)
-    public cardInfo?: CardInfo
+    public cardInfo: CardInfo
 
     @HasOne(() => Payment, Paymentable(GuestCard))
     public payment: Payment

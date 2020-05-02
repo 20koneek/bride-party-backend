@@ -16,7 +16,7 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
         const theMap: TheMap = settings.getData('the_map')
 
         const schema = await buildSchema({
-            resolvers: env.app.dirs.resolvers,
+            resolvers: [path.resolve(__dirname, '../..'), ...env.app.dirs.resolvers],
             container: SchemaContainer,
             emitSchemaFile: path.resolve(__dirname, '../api', 'schema.gql'),
         })

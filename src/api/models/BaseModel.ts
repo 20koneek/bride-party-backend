@@ -12,6 +12,7 @@ export const ENUMDataType = (ENUM) => (
 export const Paymentable = ({ name }: Function) => ({
     scope: { paymentableType: name },
     foreignKey: 'paymentableId',
+    constraints: false,
 })
 
 export class BaseModel<T> extends Model<T> {

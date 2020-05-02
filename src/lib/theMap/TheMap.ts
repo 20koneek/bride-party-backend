@@ -125,6 +125,10 @@ export class TheMap {
             cardUid,
         })
 
+        if (!SessionGUID) {
+            throw new Error('Can`t Pay')
+        }
+
         return this.createPayment({ SessionGUID })
     }
 }

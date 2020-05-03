@@ -14,19 +14,4 @@ export class GuestCardService {
             paymentableType: GuestCard.name,
         })
     }
-
-    public update = async (
-        id: string,
-        // params: Partial<Omit<Guest, 'id'>>,
-    ): Promise<Guest> => {
-        const guest = await Guest.findByPk(id)
-
-        if (!guest) {
-            throw  new Error('not found')
-        }
-
-        // Object.keys(params).forEach((key) => guest[key] = params[key])
-
-        return guest.save()
-    }
 }

@@ -1,4 +1,4 @@
-import { Column, Model, DataType, PrimaryKey, Default } from 'sequelize-typescript'
+import { Column, Model, DataType, PrimaryKey, Default, createIndexDecorator } from 'sequelize-typescript'
 
 export const UUIDColumn = {
     allowNull: false,
@@ -14,6 +14,14 @@ export const Paymentable = ({ name }: Function) => ({
     foreignKey: 'paymentableId',
     constraints: false,
 })
+
+export const Attachmentable = ({ name }: Function) => ({
+    scope: { attachmentableType: name },
+    foreignKey: 'attachmentableId',
+    constraints: false,
+})
+
+export const GroupIndex = createIndexDecorator({ type: 'FULLTEXT' })
 
 export class BaseModel<T> extends Model<T> {
 

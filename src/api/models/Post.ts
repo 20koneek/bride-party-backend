@@ -1,8 +1,12 @@
-import { Column, Table, BelongsTo, ForeignKey } from 'sequelize-typescript'
-import { BaseModel, Feed, Guest, UUIDColumn } from './'
+import { Column, Table, BelongsTo, ForeignKey, Default, HasMany } from 'sequelize-typescript'
+import { Attachment, BaseModel, Feed, Guest, UUIDColumn } from './'
 
 @Table
 export class Post extends BaseModel<Post> {
+
+    @Default('')
+    @Column({ allowNull: false })
+    public message: string
 
     @ForeignKey(() => Guest)
     @Column(UUIDColumn)
@@ -17,4 +21,7 @@ export class Post extends BaseModel<Post> {
 
     @BelongsTo(() => Feed)
     public feed: Feed
+
+    @HasMany(()=> Attachment)
+    public attachments: Attachment[]
 }

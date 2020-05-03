@@ -1,5 +1,5 @@
 import { sequelize } from '../../database/sequelize'
-import { BaseModel, ENUMDataType, UUIDColumn, Paymentable } from './BaseModel'
+import { Attachmentable, BaseModel, ENUMDataType, UUIDColumn, Paymentable, GroupIndex } from './BaseModel'
 import { Contest } from './Contest'
 import { ContestCondition } from './ContestCondition'
 import { ContestWedding } from './ContestWedding'
@@ -10,6 +10,7 @@ import { CardInfo } from './CardInfo'
 import { Payment } from './Payment'
 import { Post } from './Post'
 import { Wedding } from './Wedding'
+import { Attachment } from './Attachment'
 
 sequelize.addModels([
     Contest,
@@ -22,13 +23,16 @@ sequelize.addModels([
     Payment,
     Post,
     Wedding,
+    Attachment,
 ])
 
 export {
+    Attachmentable,
     BaseModel,
     UUIDColumn,
     ENUMDataType,
     Paymentable,
+    GroupIndex,
     Contest,
     ContestCondition,
     ContestWedding,
@@ -39,4 +43,5 @@ export {
     Payment,
     Post,
     Wedding,
+    Attachment,
 }

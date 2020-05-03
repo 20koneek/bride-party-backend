@@ -8,6 +8,7 @@ import { env } from '../env'
 import { Context } from '../types/Context'
 import { app } from 'firebase-admin'
 import { TheMap } from '../lib/theMap'
+import { graphqlUploadExpress } from 'graphql-upload'
 
 export const graphqlLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
     if (settings && env.graphql.enabled) {
@@ -21,28 +22,32 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
             emitSchemaFile: path.resolve(__dirname, '../api', 'schema.gql'),
         })
 
-        expressApp.use(env.graphql.route, (request: Request, response: Response) => {
-            const token = `${request.headers.token}`
-            const requestId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
-            const container = Container.of(requestId)
-            const context: Context = {
-                requestId,
-                container,
-                request,
-                response,
-                token,
-                firebase,
-                theMap,
-                currentGuest: null,
-            }
+        expressApp.use(
+            env.graphql.route,
+            graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }),
+            (request: Request, response: Response) => {
+                const token = `${request.headers.token}`
+                const requestId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+                const container = Container.of(requestId)
+                const context: Context = {
+                    requestId,
+                    container,
+                    request,
+                    response,
+                    token,
+                    firebase,
+                    theMap,
+                    currentGuest: null,
+                }
 
-            container.set('context', context)
+                container.set('context', context)
 
-            GraphQLHTTP({
-                schema,
-                context,
-                graphiql: env.graphql.editor,
-            })(request, response)
-        })
+                GraphQLHTTP({
+                    schema,
+                    context,
+                    graphiql: env.graphql.editor,
+                })(request, response)
+            },
+        )
     }
 }

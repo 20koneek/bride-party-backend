@@ -22,3 +22,8 @@ export enum CardStatus {
 registerEnumType(CardStatus, {
     name: 'CardStatus',
 })
+
+// export const SearchResultUnion = createUnionType({
+//     name: 'SearchResult', // the name of the GraphQL union
+//     types: () => [Movie, Actor], // function that returns array of object types classes
+// })

@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Context } from '../../types/Context'
+import { ContextWithGuest } from '../../types/Context'
 import { CurrentGuestMiddleware } from './middlewares'
 import { CardStatus, PaymentStatus } from '../types/enums'
 import { CardInfoService, GuestCardService, PaymentService } from '../services'
@@ -20,12 +20,8 @@ export class CardResolver {
     @Mutation(() => String)
     @UseMiddleware(CurrentGuestMiddleware)
     public async addCard(
-        @Ctx() { currentGuest, theMap }: Context,
+        @Ctx() { currentGuest, theMap }: ContextWithGuest,
     ): Promise<string> {
-        if (!currentGuest) {
-            throw new Error('Not auth')
-        }
-
         const payment = await this.cardService.create(currentGuest)
 
         const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
@@ -49,12 +45,8 @@ export class CardResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public async skipCard(
-        @Ctx() { currentGuest }: Context,
+        @Ctx() { currentGuest }: ContextWithGuest,
     ): Promise<Guest> {
-        if (!currentGuest) {
-            throw new Error('Not auth')
-        }
-
         const card = currentGuest.card
 
         if (card) {
@@ -69,14 +61,10 @@ export class CardResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public async updateCard(
-        @Ctx() { currentGuest, theMap }: Context,
+        @Ctx() { currentGuest, theMap }: ContextWithGuest,
         @Arg('id') id: string,
         @Arg('status', () => CardStatus) cardStatus: CardStatus,
     ): Promise<Guest> {
-        if (!currentGuest) {
-            throw new Error('Not auth')
-        }
-
         const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
         const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
         const card = currentGuest.card

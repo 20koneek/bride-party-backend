@@ -12,6 +12,8 @@ export interface Context {
     token?: string
     firebase: app.App
     theMap: TheMap
-    currentGuest: Guest | null
+    currentGuest?: Guest
     uid?: string
 }
+
+export type ContextWithGuest = Required<Context>

@@ -37,7 +37,6 @@ export const graphqlLoader: MicroframeworkLoader = async (settings: Microframewo
                     token,
                     firebase,
                     theMap,
-                    currentGuest: null,
                 }
 
                 container.set('context', context)

@@ -1,5 +1,5 @@
-import { BelongsTo, Column, ForeignKey, HasMany, Table } from 'sequelize-typescript'
-import { BaseModel, Post, UUIDColumn, Wedding } from './'
+import { BelongsTo, Column, ForeignKey, Table } from 'sequelize-typescript'
+import { BaseModel, UUIDColumn, Wedding } from './'
 
 @Table
 export class Feed extends BaseModel<Feed> {
@@ -10,7 +10,4 @@ export class Feed extends BaseModel<Feed> {
 
     @BelongsTo(() => Wedding)
     public wedding: Wedding
-
-    @HasMany(() => Post)
-    public posts: Post[]
 }

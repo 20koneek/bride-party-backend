@@ -1,5 +1,5 @@
-import { BelongsToMany, Column, HasMany, HasOne, Table } from 'sequelize-typescript'
-import { BaseModel, Contest, ContestWedding, Feed, Guest } from './'
+import { BelongsToMany, Column, HasMany, Table } from 'sequelize-typescript'
+import { BaseModel, Contest, ContestWedding, Guest, Post } from './'
 
 @Table
 export class Wedding extends BaseModel<Wedding> {
@@ -13,6 +13,6 @@ export class Wedding extends BaseModel<Wedding> {
     @BelongsToMany(() => Contest, () => ContestWedding)
     public contests: Contest[]
 
-    @HasOne(() => Feed)
-    public feed: Feed
+    @HasMany(() => Post)
+    public posts: Post[]
 }

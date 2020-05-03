@@ -1,5 +1,5 @@
 import { Column, Table, BelongsTo, ForeignKey, Default, HasMany } from 'sequelize-typescript'
-import { Attachment, BaseModel, Feed, Guest, UUIDColumn } from './'
+import { Attachment, BaseModel, Guest, UUIDColumn, Wedding } from './'
 
 @Table
 export class Post extends BaseModel<Post> {
@@ -12,16 +12,16 @@ export class Post extends BaseModel<Post> {
     @Column(UUIDColumn)
     public guestId: string
 
-    @ForeignKey(() => Feed)
+    @ForeignKey(() => Wedding)
     @Column(UUIDColumn)
-    public feedId: string
+    public weddingId: string
 
     @BelongsTo(() => Guest)
     public guest: Guest
 
-    @BelongsTo(() => Feed)
-    public feed: Feed
+    @BelongsTo(() => Wedding)
+    public wedding: Wedding
 
-    @HasMany(()=> Attachment)
+    @HasMany(() => Attachment)
     public attachments: Attachment[]
 }

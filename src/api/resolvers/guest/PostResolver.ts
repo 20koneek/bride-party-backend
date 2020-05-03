@@ -1,9 +1,9 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Payment, Post, PostInput } from '../types'
-import { PostService } from '../services'
-import { ContextWithGuest } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares'
+import { Payment, Post, PostInput } from '../../types'
+import { PostService } from '../../services'
+import { ContextWithGuest } from '../../../types/Context'
+import { CurrentGuestMiddleware } from '../middlewares'
 
 @Service()
 @Resolver(() => Payment)

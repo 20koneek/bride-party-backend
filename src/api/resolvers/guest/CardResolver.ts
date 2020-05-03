@@ -1,10 +1,10 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { ContextWithGuest } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares'
-import { CardStatus, PaymentStatus } from '../types/enums'
-import { CardInfoService, GuestCardService, PaymentService } from '../services'
-import { Guest } from '../types'
+import { ContextWithGuest } from '../../../types/Context'
+import { CurrentGuestMiddleware } from '../middlewares'
+import { CardStatus, PaymentStatus } from '../../types/enums'
+import { CardInfoService, GuestCardService, PaymentService } from '../../services'
+import { Guest } from '../../types'
 
 @Service()
 @Resolver(() => String)

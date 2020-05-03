@@ -1,9 +1,9 @@
 import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Contest } from '../types'
-import { ContestService } from '../services'
-import { ContextWithGuest } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares'
+import { Contest } from '../../types'
+import { ContestService } from '../../services'
+import { ContextWithGuest } from '../../../types/Context'
+import { CurrentGuestMiddleware } from '../middlewares'
 
 @Service()
 @Resolver(() => Contest)

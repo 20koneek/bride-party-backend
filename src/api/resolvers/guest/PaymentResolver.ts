@@ -1,10 +1,10 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Payment, PaymentInput, PaymentStatus } from '../types'
-import { PaymentService } from '../services'
-import { ContextWithGuest } from '../../types/Context'
-import { CurrentGuestMiddleware } from './middlewares'
-import { ContestCondition } from '../models'
+import { Payment, PaymentInput, PaymentStatus } from '../../types'
+import { PaymentService } from '../../services'
+import { ContextWithGuest } from '../../../types/Context'
+import { CurrentGuestMiddleware } from '../middlewares'
+import { ContestCondition } from '../../models'
 
 @Service()
 @Resolver(() => Payment)

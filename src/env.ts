@@ -31,7 +31,8 @@ export const env = {
             middlewares: getOsPaths('MIDDLEWARES'),
             interceptors: getOsPaths('INTERCEPTORS'),
             subscribers: getOsPaths('SUBSCRIBERS'),
-            resolvers: getOsPaths('RESOLVERS'),
+            adminResolvers: getOsPaths('ADMIN_RESOLVERS'),
+            guestResolvers: getOsPaths('GUEST_RESOLVERS'),
         },
     },
     log: {
@@ -50,7 +51,8 @@ export const env = {
     },
     graphql: {
         enabled: toBool(getOsEnv('GRAPHQL_ENABLED')),
-        route: getOsEnv('GRAPHQL_ROUTE'),
+        adminRoute: getOsEnv('GRAPHQL_ADMIN_ROUTE'),
+        guestRoute: getOsEnv('GRAPHQL_GUEST_ROUTE'),
         editor: toBool(getOsEnv('GRAPHQL_EDITOR')),
     },
     firebase: {

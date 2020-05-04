@@ -6,7 +6,7 @@ import { ContextWithGuest } from '../../../types/Context'
 import { Contest, ContestCondition } from '../../models'
 
 @Service()
-@Resolver(() => Wedding)
+@Resolver()
 export class WeddingResolver {
 
     @Query(() => Wedding)

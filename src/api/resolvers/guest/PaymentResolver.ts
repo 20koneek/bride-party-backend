@@ -7,7 +7,7 @@ import { CurrentGuestMiddleware } from '../middlewares'
 import { ContestCondition } from '../../models'
 
 @Service()
-@Resolver(() => Payment)
+@Resolver()
 export class PaymentResolver {
 
     constructor(

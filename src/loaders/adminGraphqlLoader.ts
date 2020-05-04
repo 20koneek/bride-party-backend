@@ -3,7 +3,7 @@ import GraphQLHTTP from 'express-graphql'
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec'
 import * as path from 'path'
 import { buildSchema } from 'type-graphql'
-import Container, { Container as SchemaContainer } from 'typedi'
+import { Container } from 'typedi'
 import { env } from '../env'
 import { Context } from '../types/Context'
 import { app } from 'firebase-admin'
@@ -17,8 +17,8 @@ export const adminGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
         const theMap: TheMap = settings.getData('the_map')
 
         const schema = await buildSchema({
-            resolvers: [path.resolve(__dirname, '../..'), ...env.app.dirs.adminResolvers],
-            container: SchemaContainer,
+            resolvers: env.app.dirs.adminResolvers,
+            container: Container,
             emitSchemaFile: path.resolve(__dirname, '../api/schemas', 'admin.gql'),
         })
 

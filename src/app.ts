@@ -26,8 +26,8 @@ bootstrapMicroframework({
         expressLoader,
         homeLoader,
         publicLoader,
-        adminGraphqlLoader,
         guestGraphqlLoader,
+        adminGraphqlLoader,
     ],
 })
     .then(() => banner(log))

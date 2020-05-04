@@ -6,7 +6,7 @@ import { ContextWithGuest } from '../../../types/Context'
 import { CurrentGuestMiddleware } from '../middlewares'
 
 @Service()
-@Resolver(() => Contest)
+@Resolver()
 export class ContestResolver {
 
     constructor(

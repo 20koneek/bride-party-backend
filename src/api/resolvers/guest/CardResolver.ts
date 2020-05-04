@@ -7,7 +7,7 @@ import { CardInfoService, GuestCardService, PaymentService } from '../../service
 import { Guest } from '../../types'
 
 @Service()
-@Resolver(() => String)
+@Resolver()
 export class CardResolver {
 
     constructor(

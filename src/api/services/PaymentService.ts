@@ -26,7 +26,7 @@ export class PaymentService {
         const payment = typeof data === 'string' ? await Payment.findByPk(data) : data
 
         if (!payment) {
-            throw new Error('notFound')
+            throw new Error('Payment notFound')
         }
 
         payment.status = status

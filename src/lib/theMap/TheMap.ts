@@ -38,19 +38,19 @@ export class TheMap {
     }
 
     private init = async ({
-                              orderId,
-                              amount,
-                              addCard,
-                              type,
-                              paymentType,
-                              recurrent,
-                              lifetime,
-                              cardUid,
-                              userLogin,
-                              userPassword,
-                              successUrl,
-                              failUrl,
-                          }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
+        orderId,
+        amount,
+        addCard,
+        type,
+        paymentType,
+        recurrent,
+        lifetime,
+        cardUid,
+        userLogin,
+        userPassword,
+        successUrl,
+        failUrl,
+    }: TheMapTypes.Init.Params): Promise<TheMapTypes.Init.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Password', this.password)
@@ -70,9 +70,9 @@ export class TheMap {
     }
 
     public listCard = async ({
-                                 login,
-                                 password,
-                             }: TheMapTypes.ListCard.Params): Promise<TheMapTypes.ListCard.Response> => {
+        login,
+        password,
+    }: TheMapTypes.ListCard.Params): Promise<TheMapTypes.ListCard.Response> => {
         const createParams: URLSearchParams = new URLSearchParams()
         createParams.set('Key', this.key)
         createParams.set('Login', login)

@@ -5,6 +5,7 @@ import { CurrentGuestMiddleware } from '../middlewares'
 import { CardStatus, PaymentStatus } from '../../types/enums'
 import { CardInfoService, GuestCardService, PaymentService } from '../../services'
 import { Guest } from '../../types'
+import { GuestCard } from '../../models'
 
 @Service()
 @Resolver()
@@ -24,8 +25,8 @@ export class CardResolver {
     ): Promise<string> {
         const payment = await this.cardService.create(currentGuest)
 
-        const successUrl = `guest/card/update/${payment.id}?status=${CardStatus.Confirmed}`
-        const failUrl = `guest/card/update/${payment.id}?status=${CardStatus.Failed}`
+        const successUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Finished}`
+        const failUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Failed}`
 
         const result = theMap.addCard({
             successUrl,
@@ -60,26 +61,28 @@ export class CardResolver {
 
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
-    public async updateCard(
+    public async updatePaymentStatus(
         @Ctx() { currentGuest, theMap }: ContextWithGuest,
         @Arg('id') id: string,
-        @Arg('status', () => CardStatus) cardStatus: CardStatus,
+        @Arg('status', () => PaymentStatus) paymentStatus: PaymentStatus,
     ): Promise<Guest> {
-        const status = cardStatus === CardStatus.Confirmed ? PaymentStatus.Finished : PaymentStatus.Failed
-        const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
-        const card = currentGuest.card
+        const payment = await this.paymentService.updateStatus(id, paymentStatus)
 
-        if (card) {
-            const payment = await card.$get('payment')
+        if (payment.paymentableType === GuestCard.name) {
+            const card = currentGuest.card
 
-            if (payment) {
+            if (card?.id === payment.paymentableId) {
+                const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
+
                 if (response.Success) {
                     const cardInfo = await this.cardInfoService.create(response.Cards[0])
-                    await this.paymentService.updateStatus(payment, status)
                     card.cardInfoId = cardInfo.id
-                    card.status = cardStatus
-                    await card.save()
+                    card.status = CardStatus.Confirmed
+                } else {
+                    card.status = CardStatus.Failed
                 }
+
+                await card.save()
             }
         }
 

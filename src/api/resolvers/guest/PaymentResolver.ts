@@ -36,8 +36,8 @@ export class PaymentResolver {
             paymentableType: ContestCondition.name,
         })
 
-        const successUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Finished}`
-        const failUrl = `wedding/payments/${payment.id}/edit?status=${PaymentStatus.Failed}`
+        const successUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Finished}`
+        const failUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Failed}`
 
         const card = currentGuest.card
 
@@ -64,15 +64,5 @@ export class PaymentResolver {
         await this.service.updateStatus(payment, PaymentStatus.Run)
 
         return url
-    }
-
-    @Mutation(() => Payment)
-    @UseMiddleware(CurrentGuestMiddleware)
-    public async updatePaymentStatus(
-        @Ctx() { currentGuest, theMap }: ContextWithGuest,
-        @Arg('id') id: string,
-        @Arg('status', () => PaymentStatus) status: PaymentStatus,
-    ): Promise<Payment> {
-        return await this.service.updateStatus(id, status)
     }
 }

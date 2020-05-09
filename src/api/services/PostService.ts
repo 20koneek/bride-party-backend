@@ -4,9 +4,9 @@ import { Guest, Post } from '../models'
 @Service()
 export class PostService {
 
-    public create = async ({ guest, messages }: { guest: Guest, messages: string }): Promise<Post> => (
+    public create = async ({ guest, message }: { guest: Guest, message: string }): Promise<Post> => (
         Post.create({
-            messages,
+            message,
             guestId: guest.id,
             weddingId: guest.weddingId,
         })

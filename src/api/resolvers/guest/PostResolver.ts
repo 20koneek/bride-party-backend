@@ -18,10 +18,10 @@ export class PaymentResolver {
     @UseMiddleware(CurrentGuestMiddleware)
     public async createPost(
         @Ctx() { currentGuest, theMap }: ContextWithGuest,
-        @Arg('input') { messages }: PostInput,
+        @Arg('input') { message }: PostInput,
     ): Promise<Post> {
         return this.service.create({
-            messages,
+            message,
             guest: currentGuest,
         })
     }

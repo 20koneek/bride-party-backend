@@ -6,5 +6,5 @@ export class PostInput {
 
     @IsNotEmpty()
     @Field()
-    public messages: string
+    public message: string
 }

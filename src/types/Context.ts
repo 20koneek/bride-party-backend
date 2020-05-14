@@ -16,4 +16,4 @@ export interface Context {
     uid?: string
 }
 
-export type ContextWithGuest = Required<Context>
+export type ContextWithRequired = Required<Context>

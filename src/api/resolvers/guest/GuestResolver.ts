@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql
 import { Service } from 'typedi'
 import { Guest, GuestInput } from '../../types'
 import { GuestService } from '../../services'
-import { ContextWithGuest } from '../../../types/Context'
+import { ContextWithRequired } from '../../../types/Context'
 import { CurrentGuestMiddleware, CurrentUidMiddleware } from '../middlewares'
 
 @Service()
@@ -17,7 +17,7 @@ export class GuestResolver {
     @Query(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public currentGuest(
-        @Ctx() { currentGuest }: ContextWithGuest,
+        @Ctx() { currentGuest }: ContextWithRequired,
     ): Guest {
         return currentGuest
     }
@@ -25,7 +25,7 @@ export class GuestResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentUidMiddleware)
     public async createGuest(
-        @Ctx() { uid, theMap }: ContextWithGuest,
+        @Ctx() { uid, theMap }: ContextWithRequired,
         @Arg('input') { name, weddingId }: GuestInput,
     ): Promise<Guest> {
         const guest = await this.service.create({ name, uid, weddingId })

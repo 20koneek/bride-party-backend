@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { ContextWithGuest } from '../../../types/Context'
+import { ContextWithRequired } from '../../../types/Context'
 import { CurrentGuestMiddleware } from '../middlewares'
 import { CardStatus, PaymentStatus } from '../../types/enums'
 import { CardInfoService, GuestCardService, PaymentService } from '../../services'
@@ -21,7 +21,7 @@ export class CardResolver {
     @Mutation(() => String)
     @UseMiddleware(CurrentGuestMiddleware)
     public async addCard(
-        @Ctx() { currentGuest, theMap }: ContextWithGuest,
+        @Ctx() { currentGuest, theMap }: ContextWithRequired,
     ): Promise<string> {
         const payment = await this.cardService.create(currentGuest)
 
@@ -46,7 +46,7 @@ export class CardResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public async skipCard(
-        @Ctx() { currentGuest }: ContextWithGuest,
+        @Ctx() { currentGuest }: ContextWithRequired,
     ): Promise<Guest> {
         const card = currentGuest.card
 
@@ -62,7 +62,7 @@ export class CardResolver {
     @Mutation(() => Guest)
     @UseMiddleware(CurrentGuestMiddleware)
     public async updatePaymentStatus(
-        @Ctx() { currentGuest, theMap }: ContextWithGuest,
+        @Ctx() { currentGuest, theMap }: ContextWithRequired,
         @Arg('id') id: string,
         @Arg('status', () => PaymentStatus) paymentStatus: PaymentStatus,
     ): Promise<Guest> {

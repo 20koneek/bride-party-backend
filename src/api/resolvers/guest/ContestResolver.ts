@@ -2,7 +2,7 @@ import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Contest } from '../../types'
 import { ContestService } from '../../services'
-import { ContextWithGuest } from '../../../types/Context'
+import { ContextWithRequired } from '../../../types/Context'
 import { CurrentGuestMiddleware } from '../middlewares'
 
 @Service()
@@ -17,7 +17,7 @@ export class ContestResolver {
     @Query(() => [Contest])
     @UseMiddleware(CurrentGuestMiddleware)
     public currentContests(
-        @Ctx() { currentGuest }: ContextWithGuest,
+        @Ctx() { currentGuest }: ContextWithRequired,
     ): Promise<Contest[]> {
         return this.service.all({ weddingId: currentGuest.weddingId })
     }
@@ -25,7 +25,7 @@ export class ContestResolver {
     @Query(() => Contest)
     @UseMiddleware(CurrentGuestMiddleware)
     public currentContest(
-        @Ctx() { currentGuest }: ContextWithGuest,
+        @Ctx() { currentGuest }: ContextWithRequired,
         @Arg('id') id: string,
     ): Promise<Contest> {
         return this.service.find({ id, weddingId: currentGuest.weddingId })

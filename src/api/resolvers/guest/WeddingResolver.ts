@@ -2,7 +2,7 @@ import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Wedding } from '../../types'
 import { CurrentGuestMiddleware } from '../middlewares'
-import { ContextWithGuest } from '../../../types/Context'
+import { ContextWithRequired } from '../../../types/Context'
 import { WeddingService } from '../../services'
 
 @Service()
@@ -17,7 +17,7 @@ export class WeddingResolver {
     @Query(() => Wedding)
     @UseMiddleware(CurrentGuestMiddleware)
     public async currentWedding(
-        @Ctx() { currentGuest }: ContextWithGuest,
+        @Ctx() { currentGuest }: ContextWithRequired,
     ): Promise<Wedding> {
         const wedding = await currentGuest.$get('wedding')
 

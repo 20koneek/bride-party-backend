@@ -11,6 +11,7 @@ import { Payment } from './Payment'
 import { Post } from './Post'
 import { Wedding } from './Wedding'
 import { Attachment } from './Attachment'
+import { UserInfo } from './UserInfo'
 
 sequelize.addModels([
     Contest,
@@ -24,6 +25,7 @@ sequelize.addModels([
     Post,
     Wedding,
     Attachment,
+    UserInfo,
 ])
 
 export {
@@ -44,4 +46,5 @@ export {
     Post,
     Wedding,
     Attachment,
+    UserInfo,
 }

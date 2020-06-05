@@ -1,14 +1,20 @@
 import { Service } from 'typedi'
-import { Guest, Post } from '../models'
+import { UserInfo } from '../models'
+import { UserInfoInput } from '../types'
 
 @Service()
 export class UserInfoService {
 
-    public create = async ({ guest, message }: { guest: Guest, message: string }): Promise<Post> => (
-        Post.create({
-            message,
-            guestId: guest.id,
-            weddingId: guest.weddingId,
-        })
+    public find = async ({ uid }: { uid: string }): Promise<UserInfo | null> => (
+        UserInfo.findOne({ where: { userId: uid } })
     )
+
+    public update = async ({ uid, input }: { uid: string, input: UserInfoInput }): Promise<UserInfo> => {
+        const [userInfo] = await UserInfo.findOrCreate({
+            where: { userId: uid },
+            defaults: input,
+        })
+
+        return userInfo
+    }
 }

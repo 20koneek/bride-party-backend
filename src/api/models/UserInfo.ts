@@ -11,8 +11,5 @@ export class UserInfo extends BaseModel<UserInfo> {
     public lastName: string
 
     @Column({ allowNull: false })
-    public secondName: string
-
-    @Column({ allowNull: false })
     public userId: string
 }

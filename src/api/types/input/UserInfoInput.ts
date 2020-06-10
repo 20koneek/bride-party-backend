@@ -8,7 +8,4 @@ export class UserInfoInput {
 
     @Field()
     public lastName: string
-
-    @Field()
-    public secondName: string
 }

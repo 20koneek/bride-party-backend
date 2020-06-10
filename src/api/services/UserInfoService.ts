@@ -10,11 +10,12 @@ export class UserInfoService {
     )
 
     public update = async ({ uid, input }: { uid: string, input: UserInfoInput }): Promise<UserInfo> => {
-        const [userInfo] = await UserInfo.findOrCreate({
+        const [userInfo] = await UserInfo.findOrBuild({
             where: { userId: uid },
-            defaults: input,
         })
+        userInfo.firstName = input.firstName
+        userInfo.lastName = input.lastName
 
-        return userInfo
+        return userInfo.save()
     }
 }

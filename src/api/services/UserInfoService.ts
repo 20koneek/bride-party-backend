@@ -6,12 +6,12 @@ import { UserInfoInput } from '../types'
 export class UserInfoService {
 
     public find = async ({ uid }: { uid: string }): Promise<UserInfo | null> => (
-        UserInfo.findOne({ where: { userId: uid } })
+        UserInfo.findOne({ where: { uid } })
     )
 
     public update = async ({ uid, input }: { uid: string, input: UserInfoInput }): Promise<UserInfo> => {
         const [userInfo] = await UserInfo.findOrBuild({
-            where: { userId: uid },
+            where: { uid },
         })
         userInfo.firstName = input.firstName
         userInfo.lastName = input.lastName

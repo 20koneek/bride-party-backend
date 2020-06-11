@@ -1,15 +1,19 @@
 import { Service } from 'typedi'
 import { Contest, ContestCondition, Wedding } from '../models'
-import { ContestInput } from '../types/input'
 
 @Service()
-export class ContestService {
+export class ContestConditionService {
 
-    public all = ({ uid }: { uid: string }): Promise<Contest[]> => (
+    public all = ({ weddingId }: { weddingId: string }): Promise<Contest[]> => (
         Contest.findAll({
-            where: { uid },
             include: [
                 ContestCondition,
+                {
+                    model: Wedding,
+                    through: {
+                        where: { id: weddingId },
+                    },
+                },
             ],
         })
     )
@@ -27,13 +31,5 @@ export class ContestService {
             ],
             where: { id },
         })
-    )
-
-    public create = (input: ContestInput): Promise<Contest> => (
-        Contest.findByPk('1')
-    )
-
-    public update = ({ uid, input }: { uid: string, input: ContestInput }): Promise<Contest> => (
-        Contest.findByPk('1')
     )
 }

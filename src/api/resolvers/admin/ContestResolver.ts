@@ -25,26 +25,26 @@ export class ContestResolver {
     @Query(() => Contest)
     @UseMiddleware(CurrentUidMiddleware)
     public contest(
-        @Ctx() { currentGuest }: ContextWithRequired,
+        @Ctx() { uid }: ContextWithRequired,
         @Arg('id') id: string,
     ): Promise<Contest> {
-        return this.service.find({ id, weddingId: currentGuest.weddingId })
+        return this.service.find({ id, uid })
     }
 
     @Mutation(() => Contest)
     @UseMiddleware(CurrentUidMiddleware)
     public async contestCreate(
-        @Arg('input') input: ContestInput,
         @Ctx() { uid }: ContextWithRequired,
+        @Arg('input') input: ContestInput,
     ): Promise<Contest> {
-        return this.service.create(input)
+        return this.service.create({ uid, input })
     }
 
     @Mutation(() => Contest)
     @UseMiddleware(CurrentUidMiddleware)
     public async contestUpdate(
-        @Arg('input') input: ContestInput,
         @Ctx() { uid }: ContextWithRequired,
+        @Arg('input') input: ContestInput,
     ): Promise<Contest> {
         return this.service.update({ uid, input })
     }

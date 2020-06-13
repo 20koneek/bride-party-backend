@@ -17,8 +17,8 @@ export class WeddingResolver {
     @Query(() => Wedding)
     @UseMiddleware(CurrentUidMiddleware)
     public async wedding(
-        @Arg('id') id: string,
         @Ctx() { uid }: ContextWithRequired,
+        @Arg('id') id: string,
     ): Promise<Wedding> {
         const wedding = await this.service.find({ id, uid })
 
@@ -32,8 +32,8 @@ export class WeddingResolver {
     @Mutation(() => Wedding)
     @UseMiddleware(CurrentUidMiddleware)
     public async weddingCreate(
-        @Arg('input') input: WeddingInput,
         @Ctx() { uid }: ContextWithRequired,
+        @Arg('input') input: WeddingInput,
     ): Promise<Wedding> {
         return this.service.create(input)
     }

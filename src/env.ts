@@ -23,7 +23,6 @@ export const env = {
         description: (pkg as any).description,
         host: getOsEnv('APP_HOST'),
         schema: getOsEnv('APP_SCHEMA'),
-        routePrefix: getOsEnv('APP_ROUTE_PREFIX'),
         port: normalizePort(process.env.PORT || getOsEnvOptional('APP_PORT')),
         banner: toBool(getOsEnv('APP_BANNER')),
         dirs: {

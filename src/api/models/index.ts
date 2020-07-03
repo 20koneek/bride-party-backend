@@ -3,7 +3,6 @@ import { Attachmentable, BaseModel, ENUMDataType, UUIDColumn, Paymentable, Group
 import { Contest } from './Contest'
 import { ContestCondition } from './ContestCondition'
 import { ContestWedding } from './ContestWedding'
-import { Feed } from './Feed'
 import { Guest } from './Guest'
 import { GuestCard } from './GuestCard'
 import { CardInfo } from './CardInfo'
@@ -17,7 +16,6 @@ sequelize.addModels([
     Contest,
     ContestCondition,
     ContestWedding,
-    Feed,
     Guest,
     GuestCard,
     CardInfo,
@@ -38,7 +36,6 @@ export {
     Contest,
     ContestCondition,
     ContestWedding,
-    Feed,
     Guest,
     GuestCard,
     CardInfo,

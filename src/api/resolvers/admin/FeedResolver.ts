@@ -1,20 +1,42 @@
 import { Service } from 'typedi'
-import { Arg, Resolver, Subscription } from 'type-graphql'
+import { Arg, Resolver, Subscription, Root, UseMiddleware, Ctx } from 'type-graphql'
+import { CurrentUidMiddleware } from '../middlewares'
+import { Post as PostModel } from '../../models'
+import { WeddingService } from '../../services'
+import { ContextWithRequired } from '../../../types/Context'
+import { Post } from '../../types'
+import { EVENTS } from '../../subscriptions'
 
 @Service()
 @Resolver()
 export class FeedResolver {
 
-    constructor() {
+    constructor(
+        private weddingService: WeddingService,
+    ) {
     }
 
-    @Subscription({
-        topics: 'NOTIFICATIONS',
+    @Subscription(() => Post, {
+        topics: EVENTS.POSTS.CREATED,
+        filter: ({ payload, args }) => {
+            const { weddingId }: { weddingId: string } = args
+            const post: PostModel = payload
+
+            return post.weddingId === weddingId
+        },
     })
-    public feeds(
-        @Arg('test') test: string,
-    ): string {
-        console.log(test)
-        return 'test'
+    @UseMiddleware(CurrentUidMiddleware)
+    public async feeds(
+        @Ctx() { uid }: ContextWithRequired,
+        @Root() post: PostModel,
+        @Arg('weddingId') weddingId: string,
+    ): Promise<PostModel> {
+        const wedding = await this.weddingService.find({ id: weddingId, uid })
+
+        if (!wedding) {
+            throw new Error('weeding not found')
+        }
+
+        return post
     }
 }

@@ -31,9 +31,8 @@ export class WeddingResolver {
     @Query(() => Wedding)
     public async wedding(
         @Arg('id') id: string,
-        @Ctx() { uid }: ContextWithRequired,
     ): Promise<Wedding> {
-        const wedding = await this.service.find({ id, uid })
+        const wedding = await this.service.findById(id)
 
         if (!wedding) {
             throw new Error('not found')

@@ -31,11 +31,7 @@ export class FeedResolver {
         @Root() post: PostModel,
         @Arg('weddingId') weddingId: string,
     ): Promise<PostModel> {
-        const wedding = await this.weddingService.find({ id: weddingId, uid })
-
-        if (!wedding) {
-            throw new Error('weeding not found')
-        }
+        await this.weddingService.find({ id: weddingId, uid })
 
         return post
     }

@@ -17,7 +17,7 @@ export const adminGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
         const httpServer: Server = settings.getData('http_server')
         const firebase: app.App = settings.getData('firebase')
         const theMap: TheMap = settings.getData('the_map')
-        const pubSub = new RedisPubSub()
+        const pubSub: RedisPubSub = settings.getData('pub_sub')
 
         const schema = await buildSchema({
             pubSub,

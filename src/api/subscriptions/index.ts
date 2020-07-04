@@ -1,4 +1,4 @@
-import * as POSTS_EVENTS from './posts';
+import * as POSTS_EVENTS from './Posts';
 
 export const EVENTS = {
   POSTS: POSTS_EVENTS,

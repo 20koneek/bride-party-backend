@@ -1,21 +1,19 @@
 import { Service } from 'typedi'
-import { UserInfo, Wedding } from '../models'
+import { Wedding } from '../models'
 import { WeddingInput } from '../types/input'
 
 @Service()
 export class WeddingService {
 
-    public find = async ({ id, uid }: { id: string, uid: string }): Promise<Wedding | null> => {
-        const wedding = await Wedding.findOne({
+    public findById = (id: string): Promise<Wedding | null> => (
+        Wedding.findOne({
             where: { id },
-            include: [
-                {
-                    model: UserInfo,
-                    through: {
-                        where: { id: uid },
-                    },
-                },
-            ],
+        })
+    )
+
+    public find = async ({ id, uid }: { id: string, uid: string }): Promise<Wedding> => {
+        const wedding = await Wedding.findOne({
+            where: { id, uid },
         })
 
         if (!wedding) {

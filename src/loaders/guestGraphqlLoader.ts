@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server-express'
 import { Application } from 'express'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec'
 import * as path from 'path'
 import { buildSchema } from 'type-graphql'
@@ -14,8 +15,10 @@ export const guestGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
         const expressApp: Application = settings.getData('express_app')
         const firebase: app.App = settings.getData('firebase')
         const theMap: TheMap = settings.getData('the_map')
+        const pubSub: RedisPubSub = settings.getData('pub_sub')
 
         const schema = await buildSchema({
+            pubSub,
             resolvers: env.app.dirs.guestResolvers,
             container: Container,
             emitSchemaFile: path.resolve(__dirname, '../api/schemas', 'guest.gql'),

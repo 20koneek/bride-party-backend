@@ -7,7 +7,7 @@ export class Wedding extends BaseModel<Wedding> {
     @Column({ allowNull: false })
     public name: string
 
-    @Index({ unique: true })
+    @Index
     @Column({ allowNull: false })
     public uid: string
 

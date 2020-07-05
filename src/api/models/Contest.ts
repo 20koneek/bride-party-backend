@@ -1,9 +1,10 @@
-import { Column, Table, HasMany, BelongsToMany } from 'sequelize-typescript'
+import { Column, Table, HasMany, BelongsToMany, Index } from 'sequelize-typescript'
 import { BaseModel, ContestCondition, ContestWedding, Wedding } from './'
 
 @Table
 export class Contest extends BaseModel<Contest> {
 
+    @Index
     @Column({ allowNull: false })
     public uid: string
 

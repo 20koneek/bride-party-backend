@@ -23,7 +23,7 @@ export class WeddingService {
         return wedding
     }
 
-    public create = (input: WeddingInput): Promise<Wedding> => (
-        Wedding.create(input)
+    public create = ({ input, uid }: { input: WeddingInput, uid: string }): Promise<Wedding> => (
+        Wedding.create({ ...input, uid })
     )
 }

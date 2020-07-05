@@ -3,12 +3,14 @@ import { Context } from '../../../types/Context'
 
 export class CurrentUidMiddleware implements MiddlewareInterface<Context> {
 
-    public use = async ({ context }: ResolverData<Context>, next: NextFn) => {
-        if (!context.token) {
+    public use = async ({ context, args }: ResolverData<Context>, next: NextFn) => {
+        const token = context.token || args.token
+
+        if (!token) {
             throw new Error('Not auth')
         }
 
-        const { uid } = await context.firebase.auth().verifyIdToken(context.token)
+        const { uid } = await context.firebase.auth().verifyIdToken(token)
 
         if (!uid) {
             throw new Error('not auth')

@@ -27,12 +27,12 @@ export const adminGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
         })
 
         const apolloServer = new ApolloServer({
+            schema,
             introspection: env.isDevelopment,
             playground: env.isDevelopment,
-            schema,
             subscriptions: env.graphql.adminRoute,
             context: ({ req, connection }): Context => ({
-                token: `${(connection ? connection.context : req.headers).token}`,
+                token: (connection ? connection.context : req.headers).token,
                 firebase,
                 theMap,
             }),

@@ -35,6 +35,6 @@ export class WeddingResolver {
         @Ctx() { uid }: ContextWithRequired,
         @Arg('input') input: WeddingInput,
     ): Promise<Wedding> {
-        return this.service.create(input)
+        return this.service.create({ input, uid })
     }
 }

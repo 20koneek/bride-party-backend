@@ -26,10 +26,11 @@ export class FeedResolver {
         },
     })
     @UseMiddleware(CurrentUidMiddleware)
-    public async feeds(
+    public async feed(
         @Ctx() { uid }: ContextWithRequired,
         @Root() post: PostModel,
         @Arg('weddingId') weddingId: string,
+        @Arg('token', { nullable: true }) token: string,
     ): Promise<PostModel> {
         await this.weddingService.find({ id: weddingId, uid })
 

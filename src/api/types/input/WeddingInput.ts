@@ -4,5 +4,14 @@ import { Field, InputType } from 'type-graphql'
 export class WeddingInput {
 
     @Field()
-    public name: string
+    public title: string
+
+    @Field()
+    public description: string
+
+    @Field()
+    public startDate: Date
+
+    @Field()
+    public endDate: Date
 }

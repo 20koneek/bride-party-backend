@@ -5,11 +5,22 @@ import { BaseModel, Contest, ContestWedding, Guest, Post } from './'
 export class Wedding extends BaseModel<Wedding> {
 
     @Column({ allowNull: false })
-    public name: string
+    public title: string
+
+    @Column({ allowNull: false })
+    public description: string
 
     @Index
     @Column({ allowNull: false })
     public uid: string
+
+    @Index
+    @Column({ allowNull: false, field: 'startDate' })
+    public startDate: Date
+
+    @Index
+    @Column({ allowNull: false, field: 'endDate' })
+    public endDate: Date
 
     @HasMany(() => Guest)
     public guests: Guest[]

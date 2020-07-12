@@ -7,5 +7,14 @@ export class Wedding {
     public id: string
 
     @Field()
-    public name: string
+    public title: string
+
+    @Field()
+    public description: string
+
+    @Field()
+    public startDate: Date
+
+    @Field()
+    public endDate: Date
 }

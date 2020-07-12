@@ -8,6 +8,7 @@ const options: SequelizeOptions = {
         underscored: true,
         timestamps: true,
     },
+    // logging: console.log,
 }
 
 const sequelize = new Sequelize(options)

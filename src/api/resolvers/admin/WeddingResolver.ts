@@ -29,6 +29,16 @@ export class WeddingResolver {
         return wedding
     }
 
+    @Query(() => [Wedding])
+    @UseMiddleware(CurrentUidMiddleware)
+    public async weddings(
+        @Ctx() { uid }: ContextWithRequired,
+        @Arg('startDate') startDate: Date,
+        @Arg('endDate') endDate: Date,
+    ): Promise<Wedding[]> {
+        return this.service.findBetweenDate({ uid, startDate, endDate })
+    }
+
     @Mutation(() => Wedding)
     @UseMiddleware(CurrentUidMiddleware)
     public async weddingCreate(

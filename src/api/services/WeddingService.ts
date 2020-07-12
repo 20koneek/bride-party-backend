@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import { Service } from 'typedi'
 import { Wedding } from '../models'
 import { WeddingInput } from '../types/input'
@@ -22,6 +23,16 @@ export class WeddingService {
 
         return wedding
     }
+
+    public findBetweenDate = async ({ uid, startDate, endDate }: { uid: string, startDate: Date, endDate: Date }): Promise<Wedding[]> => (
+        Wedding.findAll({
+            where: {
+                uid,
+                startDate: { [Op.gte]: startDate },
+                endDate: { [Op.lte]: endDate },
+            },
+        })
+    )
 
     public create = ({ input, uid }: { input: WeddingInput, uid: string }): Promise<Wedding> => (
         Wedding.create({ ...input, uid })

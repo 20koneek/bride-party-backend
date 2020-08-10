@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
 import { Contest, ContestCondition } from '../models'
-import { ContestInput } from '../types/input'
+import { ContestInput } from '../types'
 
 @Service()
 export class ContestService {

@@ -1,7 +1,7 @@
 import { Op } from 'sequelize'
 import { Service } from 'typedi'
 import { Wedding } from '../models'
-import { WeddingInput } from '../types/input'
+import { WeddingInput } from '../types'
 
 @Service()
 export class WeddingService {

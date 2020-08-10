@@ -74,7 +74,9 @@ export class CardResolver {
             if (card?.id === payment.paymentableId) {
                 const response = await theMap.listCard({ login: currentGuest.id, password: currentGuest.getPassword() })
 
+                // @ts-ignore
                 if (response.Success) {
+                    // @ts-ignore
                     const cardInfo = await this.cardInfoService.create(response.Cards[0])
                     card.cardInfoId = cardInfo.id
                     card.status = CardStatus.Confirmed

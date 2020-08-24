@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql'
+import { Color } from './'
 
 @ObjectType()
 export class ContestCondition {
@@ -8,4 +9,7 @@ export class ContestCondition {
 
     @Field()
     public name: string
+
+    @Field(() => Color)
+    public color: Color
 }

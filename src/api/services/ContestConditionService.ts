@@ -1,5 +1,5 @@
 import { Service } from 'typedi'
-import { Contest, ContestCondition, Wedding } from '../models'
+import { Color, Contest, ContestCondition, Wedding } from '../models'
 
 @Service()
 export class ContestConditionService {
@@ -8,6 +8,7 @@ export class ContestConditionService {
         Contest.findAll({
             include: [
                 ContestCondition,
+                Color,
                 {
                     model: Wedding,
                     through: {
@@ -22,6 +23,7 @@ export class ContestConditionService {
         Contest.findOne({
             include: [
                 ContestCondition,
+                Color,
                 {
                     model: Wedding,
                     through: {

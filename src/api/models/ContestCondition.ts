@@ -1,5 +1,5 @@
 import { BelongsTo, Column, ForeignKey, Table } from 'sequelize-typescript'
-import { BaseModel, Contest, UUIDColumn } from './'
+import { BaseModel, Color, Contest, UUIDColumn } from './'
 
 @Table
 export class ContestCondition extends BaseModel<ContestCondition> {
@@ -11,6 +11,13 @@ export class ContestCondition extends BaseModel<ContestCondition> {
     @Column(UUIDColumn)
     public contestId: string
 
+    @ForeignKey(() => Color)
+    @Column(UUIDColumn)
+    public colorId: string
+
     @BelongsTo(() => Contest)
     public contest: Contest
+
+    @BelongsTo(() => Color)
+    public color: Color
 }

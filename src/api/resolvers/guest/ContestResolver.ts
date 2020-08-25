@@ -1,7 +1,7 @@
 import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
 import { Contest } from '../../types'
-import { ContestConditionService } from '../../services'
+import { ContestGuestService } from '../../services'
 import { ContextWithRequired } from '../../../types/Context'
 import { CurrentGuestMiddleware } from '../middlewares'
 
@@ -10,7 +10,7 @@ import { CurrentGuestMiddleware } from '../middlewares'
 export class ContestResolver {
 
     constructor(
-        private service: ContestConditionService,
+        private service: ContestGuestService,
     ) {
     }
 

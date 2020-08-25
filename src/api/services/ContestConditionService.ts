@@ -1,37 +1,18 @@
 import { Service } from 'typedi'
-import { Color, Contest, ContestCondition, Wedding } from '../models'
+import { ContestCondition } from '../models'
+import { ContestConditionInput } from '../types'
 
 @Service()
 export class ContestConditionService {
 
-    public all = ({ weddingId }: { weddingId: string }): Promise<Contest[]> => (
-        Contest.findAll({
-            include: [
-                ContestCondition,
-                Color,
-                {
-                    model: Wedding,
-                    through: {
-                        where: { id: weddingId },
-                    },
-                },
-            ],
-        })
-    )
+    public create = async ({ input }: { input: ContestConditionInput }): Promise<ContestCondition> => {
+        const condition = await ContestCondition.create(input)
+        const color = await condition.$get('color')
 
-    public find = ({ id, weddingId }: { id: string, weddingId: string }): Promise<Contest> => (
-        Contest.findOne({
-            include: [
-                ContestCondition,
-                Color,
-                {
-                    model: Wedding,
-                    through: {
-                        where: { id: weddingId },
-                    },
-                },
-            ],
-            where: { id },
-        })
-    )
+        if (color) {
+            condition.color = color
+        }
+
+        return condition
+    }
 }

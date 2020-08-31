@@ -14,6 +14,7 @@ export class ContestService {
             where: { id, uid },
             include: [{
                 model: ContestCondition,
+                // order: ['created_at', 'ASC'],
                 include: [Color],
             }],
         })

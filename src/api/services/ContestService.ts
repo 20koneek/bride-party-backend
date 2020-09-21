@@ -6,19 +6,36 @@ import { ContestInput } from '../types'
 export class ContestService {
 
     public all = ({ uid }: { uid: string }): Promise<Contest[]> => (
-        Contest.findAll({ where: { uid } })
+        Contest.findAll({
+            where: { uid },
+            include: [{
+                model: ContestCondition,
+                include: [Color],
+            }],
+            order: [
+                [{ model: ContestCondition, as: 'conditions' }, 'createdAt'],
+            ],
+        })
     )
 
-    public find = ({ id, uid }: { id: string, uid: string }): Promise<Contest> => (
-        Contest.findOne({
+    public find = ({ id, uid }: { id: string, uid: string }): Promise<Contest> => {
+        const contest = Contest.findOne({
             where: { id, uid },
             include: [{
                 model: ContestCondition,
-                // order: ['created_at', 'ASC'],
                 include: [Color],
             }],
+            order: [
+                [{ model: ContestCondition, as: 'conditions' }, 'createdAt'],
+            ],
         })
-    )
+
+        if (!contest) {
+            throw new Error('NotFound')
+        }
+
+        return contest
+    }
 
     public create = ({ uid, input }: { uid: string, input: ContestInput }): Promise<Contest> => (
         Contest.create({ uid, ...input })

@@ -1,5 +1,6 @@
-import { Column, Index, Table } from 'sequelize-typescript'
-import { BaseModel } from './'
+import { AllowNull, Column, Default, Index, Table } from 'sequelize-typescript'
+import { BaseModel, ENUMDataType } from './'
+import { Role } from '../types/enums'
 
 @Table
 export class UserInfo extends BaseModel<UserInfo> {
@@ -13,4 +14,11 @@ export class UserInfo extends BaseModel<UserInfo> {
     @Index({ unique: true })
     @Column({ allowNull: false })
     public uid: string
+
+    @Default(Role.User)
+    @AllowNull(false)
+    @Column(ENUMDataType(Role))
+    public role: Role
+
+    public isAdmin = () => this.role === Role.Admin
 }

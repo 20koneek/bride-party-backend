@@ -1,6 +1,6 @@
 import { Op } from 'sequelize'
 import { Service } from 'typedi'
-import { Wedding } from '../models'
+import { Color, Contest, ContestCondition, Wedding } from '../models'
 import { WeddingInput } from '../types'
 
 @Service()
@@ -15,6 +15,17 @@ export class WeddingService {
     public find = async ({ id, uid }: { id: string, uid: string }): Promise<Wedding> => {
         const wedding = await Wedding.findOne({
             where: { id, uid },
+            include: [
+                {
+                    model: Contest,
+                    include: [
+                        {
+                            model: ContestCondition,
+                            include: [Color],
+                        },
+                    ],
+                },
+            ],
         })
 
         if (!wedding) {

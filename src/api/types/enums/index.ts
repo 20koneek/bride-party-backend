@@ -7,9 +7,7 @@ export enum PaymentStatus {
     Finished = 'Finished',
 }
 
-registerEnumType(PaymentStatus, {
-    name: 'PaymentStatus',
-})
+registerEnumType(PaymentStatus, { name: 'PaymentStatus' })
 
 
 export enum CardStatus {
@@ -19,11 +17,12 @@ export enum CardStatus {
     Failed = 'Failed',
 }
 
-registerEnumType(CardStatus, {
-    name: 'CardStatus',
-})
+registerEnumType(CardStatus, { name: 'CardStatus' })
 
-// export const SearchResultUnion = createUnionType({
-//     name: 'SearchResult', // the name of the GraphQL union
-//     types: () => [Movie, Actor], // function that returns array of object types classes
-// })
+
+export enum Role {
+    Admin = 'Admin',
+    User = 'User',
+}
+
+registerEnumType(Role, { name: 'Role' })

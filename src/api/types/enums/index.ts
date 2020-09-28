@@ -26,3 +26,11 @@ export enum Role {
 }
 
 registerEnumType(Role, { name: 'Role' })
+
+
+export enum ColorStatus {
+    Active = 'Active',
+    Deleted = 'Deleted',
+}
+
+registerEnumType(ColorStatus, { name: 'ColorStatus' })

@@ -1,12 +1,12 @@
 import { Service } from 'typedi'
 import { Color } from '../models'
-import { ColorInput } from '../types'
+import { ColorInput, ColorStatus } from '../types'
 
 @Service()
 export class ColorService {
 
     public all = (): Promise<Color[]> => (
-        Color.findAll()
+        Color.findAll({ where: { status: ColorStatus.Active } })
     )
 
     public find = ({ id }: { id: string }): Promise<Color> => (
@@ -18,8 +18,17 @@ export class ColorService {
     )
 
     public update = async ({ id, input }: { id: string, input: ColorInput }): Promise<Color> => {
-        const [, [contest]] = await Color.update(input, { where: { id } })
+        const [, [color]] = await Color.update(input, { where: { id } })
 
-        return contest
+        return color
+    }
+
+    public delete = async ({ id }: { id: string }): Promise<boolean> => {
+        const [color] = await Color.update(
+            { status: ColorStatus.Deleted },
+            { where: { id } },
+        )
+
+        return !!color
     }
 }

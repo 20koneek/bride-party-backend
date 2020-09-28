@@ -1,5 +1,6 @@
-import { Column, HasMany, Index, Table } from 'sequelize-typescript'
-import { BaseModel, ContestCondition } from './'
+import { AllowNull, Column, Default, HasMany, Index, Table } from 'sequelize-typescript'
+import { BaseModel, ContestCondition, ENUMDataType } from './'
+import { ColorStatus } from '../types/enums'
 
 @Table
 export class Color extends BaseModel<Color> {
@@ -10,6 +11,12 @@ export class Color extends BaseModel<Color> {
 
     @Column({ allowNull: false })
     public value: string
+
+    @Index
+    @AllowNull(false)
+    @Default(ColorStatus.Active)
+    @Column(ENUMDataType(ColorStatus))
+    public status: ColorStatus
 
     @HasMany(() => ContestCondition)
     public conditions: ContestCondition[]

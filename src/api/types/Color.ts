@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql'
+import { ColorStatus } from './enums'
 
 @ObjectType()
 export class Color {
@@ -11,4 +12,7 @@ export class Color {
 
     @Field()
     public value: string
+
+    @Field(() => Color)
+    public status: ColorStatus
 }

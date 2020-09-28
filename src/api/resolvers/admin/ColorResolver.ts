@@ -43,4 +43,12 @@ export class ColorResolver {
     ): Promise<Color> {
         return this.service.update({ id, input })
     }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(CurrentUidMiddleware)
+    public async colorDelete(
+        @Arg('id') id: string,
+    ): Promise<boolean> {
+        return this.service.delete({ id })
+    }
 }

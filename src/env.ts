@@ -1,8 +1,7 @@
 import * as dotenv from 'dotenv'
 import * as path from 'path'
-
 import * as pkg from '../package.json'
-import { getOsEnv, getOsEnvOptional, getOsPaths, normalizePort, toBool, toNumber } from './lib/env'
+import { getOsEnv, getOsEnvOptional, getPaths, normalizePort, toBool, toNumber } from './lib/env'
 
 /**
  * Load .env file or for tests the .env.test file.
@@ -26,12 +25,12 @@ export const env = {
         port: normalizePort(process.env.PORT || getOsEnvOptional('APP_PORT')),
         banner: toBool(getOsEnv('APP_BANNER')),
         dirs: {
-            controllers: getOsPaths('CONTROLLERS'),
-            middlewares: getOsPaths('MIDDLEWARES'),
-            interceptors: getOsPaths('INTERCEPTORS'),
-            subscribers: getOsPaths('SUBSCRIBERS'),
-            adminResolvers: getOsPaths('ADMIN_RESOLVERS'),
-            guestResolvers: getOsPaths('GUEST_RESOLVERS'),
+            controllers: getPaths('src/api/controllers/**/*Controller.ts'),
+            middlewares: getPaths('src/middlewares/**/*Middleware.ts'),
+            interceptors: getPaths('src/api/interceptors/**/*Interceptor.ts'),
+            subscribers: getPaths('src/api/subscribers/**/*Subscriber.ts'),
+            adminResolvers: getPaths('src/api/resolvers/admin/*Resolver.ts'),
+            guestResolvers: getPaths('src/api/resolvers/guest/*Resolver.ts'),
         },
     },
     log: {
@@ -46,7 +45,7 @@ export const env = {
         username: getOsEnvOptional('USERNAME'),
         password: getOsEnvOptional('PASSWORD'),
         database: getOsEnvOptional('DATABASE'),
-        logging: toBool(getOsEnvOptional('LOGGING')),
+        logging: getOsEnvOptional('LOGGING'),
     },
     graphql: {
         enabled: toBool(getOsEnv('GRAPHQL_ENABLED')),

@@ -18,21 +18,8 @@ export function getPath(path: string): string {
         : join(process.cwd(), path)
 }
 
-export function getPaths(paths: string[]): [string, ...string[]] {
-    const [path, ...pathss] = paths.map(p => getPath(p))
-    return [path, ...pathss]
-}
-
-export function getOsPath(key: string): string {
-    return getPath(getOsEnv(key))
-}
-
-export function getOsPaths(key: string): [string, ...string[]] {
-    return getPaths(getOsEnvArray(key))
-}
-
-export function getOsEnvArray(key: string, delimiter: string = ','): string[] {
-    return process && (process.env[key] || '').split(delimiter) || []
+export function getPaths(path: string): [string, ...string[]] {
+    return [getPath(path)]
 }
 
 export function toNumber(value: string | undefined | null): number {

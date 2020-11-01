@@ -2,13 +2,13 @@ import { ApolloServer } from 'apollo-server-express'
 import { Application } from 'express'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec'
-import * as path from 'path'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
 import { env } from '../env'
 import { Context } from '../types/Context'
 import { app } from 'firebase-admin'
 import { TheMap } from '../lib/theMap'
+import { getPath } from '../lib/env'
 
 export const guestGraphqlLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
     if (settings && env.graphql.enabled) {
@@ -21,7 +21,7 @@ export const guestGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
             pubSub,
             resolvers: env.app.dirs.guestResolvers,
             container: Container,
-            emitSchemaFile: path.resolve(__dirname, '../api/schemas', 'guest.gql'),
+            emitSchemaFile: getPath('src/api/schemas/guest.gql'),
         })
 
         const apolloServer = new ApolloServer({

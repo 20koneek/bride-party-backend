@@ -1,17 +1,26 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { env } from '../../env'
 
+const { databaseUrl, logging, ...db } = env.db
+
 const options: SequelizeOptions = {
-    ...env.db,
     dialect: 'postgres',
+    dialectOptions: {
+        ssl: env.isProduction && {
+            require: true,
+            rejectUnauthorized: false,
+        },
+    },
     define: {
         underscored: true,
         timestamps: true,
     },
-    // logging: console.log,
+    logging: console[logging || ''],
 }
 
-const sequelize = new Sequelize(options)
+const sequelize = env.isProduction
+    ? new Sequelize(databaseUrl || '', options)
+    : new Sequelize({ ...db, ...options } as SequelizeOptions)
 
 sequelize.sync()
 

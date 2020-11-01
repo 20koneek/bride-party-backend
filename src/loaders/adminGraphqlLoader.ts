@@ -1,4 +1,3 @@
-import path from 'path'
 import { Server } from 'http'
 import { Application } from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -10,6 +9,7 @@ import { app } from 'firebase-admin'
 import { env } from '../env'
 import { Context } from '../types/Context'
 import { TheMap } from '../lib/theMap'
+import { getPath } from '../lib/env'
 
 export const adminGraphqlLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
     if (settings && env.graphql.enabled) {
@@ -23,7 +23,7 @@ export const adminGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
             pubSub,
             resolvers: env.app.dirs.adminResolvers,
             container: Container,
-            emitSchemaFile: path.resolve(__dirname, '../api/schemas', 'admin.gql'),
+            emitSchemaFile: getPath('src/api/schemas/admin.gql'),
         })
 
         const apolloServer = new ApolloServer({

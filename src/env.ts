@@ -20,8 +20,8 @@ export const env = {
         name: getOsEnv('APP_NAME'),
         version: (pkg as any).version,
         description: (pkg as any).description,
-        host: getOsEnv('APP_HOST'),
-        schema: getOsEnv('APP_SCHEMA'),
+        host: getOsEnvOptional('APP_HOST'),
+        schema: getOsEnvOptional('APP_SCHEMA'),
         port: normalizePort(process.env.PORT || getOsEnvOptional('APP_PORT')),
         banner: toBool(getOsEnv('APP_BANNER')),
         dirs: {

@@ -24,6 +24,7 @@ export const env = {
         schema: getOsEnvOptional('APP_SCHEMA'),
         port: normalizePort(process.env.PORT || getOsEnvOptional('APP_PORT')),
         banner: toBool(getOsEnv('APP_BANNER')),
+        redisUrl: getOsEnvOptional('REDIS_URL'),
         dirs: {
             controllers: getPaths('src/api/controllers/**/*Controller.ts'),
             middlewares: getPaths('src/middlewares/**/*Middleware.ts'),

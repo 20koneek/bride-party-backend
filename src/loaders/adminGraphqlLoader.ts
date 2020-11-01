@@ -28,8 +28,8 @@ export const adminGraphqlLoader: MicroframeworkLoader = async (settings: Microfr
 
         const apolloServer = new ApolloServer({
             schema,
-            introspection: env.isDevelopment,
-            playground: env.isDevelopment,
+            introspection: env.graphql.editor,
+            playground: env.graphql.editor,
             subscriptions: env.graphql.adminRoute,
             context: ({ req, connection }): Context => ({
                 token: (connection ? connection.context : req.headers).token,

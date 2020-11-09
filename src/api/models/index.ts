@@ -1,5 +1,13 @@
 import { sequelize } from '../../database/sequelize'
-import { Attachmentable, BaseModel, ENUMDataType, UUIDColumn, Paymentable, GroupIndex } from './BaseModel'
+import {
+    Attachmentable,
+    BaseModel,
+    ENUMDataType,
+    UUIDColumn,
+    Paymentable,
+    GroupIndex,
+    GroupUniqueIndex,
+} from './BaseModel'
 import { Contest } from './Contest'
 import { ContestCondition } from './ContestCondition'
 import { ContestWedding } from './ContestWedding'
@@ -35,6 +43,7 @@ export {
     ENUMDataType,
     Paymentable,
     GroupIndex,
+    GroupUniqueIndex,
     Contest,
     ContestCondition,
     ContestWedding,

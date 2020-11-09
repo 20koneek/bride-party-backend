@@ -36,8 +36,8 @@ export class PaymentResolver {
             paymentableType: ContestCondition.name,
         })
 
-        const successUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Finished}`
-        const failUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Failed}`
+        const successUrl = `payments/${payment.id}/update?status=${PaymentStatus.Finished}`
+        const failUrl = `payments/${payment.id}/update?status=${PaymentStatus.Failed}`
 
         const card = currentGuest.card
 
@@ -47,15 +47,11 @@ export class PaymentResolver {
 
         const cardInfo = await card.$get('cardInfo')
 
-        if (!cardInfo) {
-            throw new Error('cardInfo not exist')
-        }
-
         const url = await theMap.pay({
             userLogin: currentGuest.id,
             userPassword: currentGuest.getPassword(),
             orderId: payment.id,
-            cardUid: cardInfo.cardUid,
+            cardUid: cardInfo?.cardUid,
             amount,
             failUrl,
             successUrl,

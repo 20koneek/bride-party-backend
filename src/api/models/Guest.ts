@@ -9,7 +9,15 @@ import {
     Index,
     Table,
 } from 'sequelize-typescript'
-import { BaseModel, GuestCard, Payment, Post, UUIDColumn, Wedding } from './'
+import {
+    BaseModel,
+    GroupUniqueIndex,
+    GuestCard,
+    Payment,
+    Post,
+    UUIDColumn,
+    Wedding,
+} from './'
 
 @Table
 export class Guest extends BaseModel<Guest> {
@@ -25,15 +33,21 @@ export class Guest extends BaseModel<Guest> {
     @Column({ allowNull: false })
     public name: string
 
-    @Index({ unique: true })
+    @Index
+    @GroupUniqueIndex
     @Column({ allowNull: false })
     public uid: string
+
+    @Index
+    @Column({ allowNull: false })
+    public active: boolean
 
     @Column({ allowNull: false })
     public salt: string
 
+    @GroupUniqueIndex
     @ForeignKey(() => Wedding)
-    @Column(UUIDColumn)
+    @Column({ ...UUIDColumn, field: 'weddingId' })
     public weddingId: string
 
     @BelongsTo(() => Wedding)

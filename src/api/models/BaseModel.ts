@@ -23,6 +23,8 @@ export const Attachmentable = ({ name }: Function) => ({
 
 export const GroupIndex = createIndexDecorator({ type: 'FULLTEXT' })
 
+export const GroupUniqueIndex = createIndexDecorator({ type: 'FULLTEXT', unique: true })
+
 export class BaseModel<T> extends Model<T> {
 
     @PrimaryKey

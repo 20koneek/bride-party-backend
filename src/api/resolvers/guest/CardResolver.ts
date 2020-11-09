@@ -25,8 +25,8 @@ export class CardResolver {
     ): Promise<string> {
         const payment = await this.cardService.create(currentGuest)
 
-        const successUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Finished}`
-        const failUrl = `wedding/payments/${payment.id}/update?status=${PaymentStatus.Failed}`
+        const successUrl = `payments/${payment.id}/update?status=${PaymentStatus.Finished}`
+        const failUrl = `payments/${payment.id}/update?status=${PaymentStatus.Failed}`
 
         const result = theMap.addCard({
             successUrl,
@@ -48,15 +48,13 @@ export class CardResolver {
     public async skipCard(
         @Ctx() { currentGuest }: ContextWithRequired,
     ): Promise<Guest> {
-        const card = currentGuest.card
+        const card = currentGuest.card || new GuestCard()
+        card.guestId = currentGuest.id
+        card.status = CardStatus.Skipped
 
-        if (card) {
-            card.status = CardStatus.Skipped
+        currentGuest.card = await card.save()
 
-            await card.save()
-        }
-
-        return currentGuest.reload()
+        return currentGuest
     }
 
     @Mutation(() => Guest)

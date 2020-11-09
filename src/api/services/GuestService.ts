@@ -6,19 +6,24 @@ export class GuestService {
 
     public find = (uid: string): Promise<Guest | null> => (
         Guest.findOne({
-            where: { uid },
+            where: { uid, active: true },
             include: [GuestCard],
         })
     )
 
-    public create = (
+    public create = async (
         { name, uid, weddingId }:
         { name: string, uid: string, weddingId: string },
     ): Promise<Guest> => {
-        const guest = new Guest()
+        await Guest.update({ active: false }, {
+            where: { uid, weddingId },
+        })
+
+        let guest = await Guest.findOne({ where: { uid, weddingId } }) || new Guest()
         guest.name = name
         guest.uid = uid
         guest.weddingId = weddingId
+        guest.active = true
 
         return guest.save()
     }

@@ -1,6 +1,6 @@
 import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { Service } from 'typedi'
-import { Wedding } from '../../types'
+import { Wedding, WeddingInfo } from '../../types'
 import { CurrentGuestMiddleware } from '../middlewares'
 import { ContextWithRequired } from '../../../types/Context'
 import { WeddingService } from '../../services'
@@ -28,10 +28,10 @@ export class WeddingResolver {
         return wedding
     }
 
-    @Query(() => Wedding)
-    public async wedding(
+    @Query(() => WeddingInfo)
+    public async weddingInfo(
         @Arg('id') id: string,
-    ): Promise<Wedding> {
+    ): Promise<WeddingInfo> {
         const wedding = await this.service.findById(id)
 
         if (!wedding) {

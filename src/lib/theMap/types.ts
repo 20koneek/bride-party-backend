@@ -110,7 +110,7 @@ export namespace TheMapTypes {
             userPassword: string
             successUrl: string
             failUrl: string
-            cardUid: string
+            cardUid?: string
         }
 
         export interface Success {

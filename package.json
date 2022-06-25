@@ -39,7 +39,7 @@
         "microframework-w3tec": "0.6.3",
         "moment": "2.29.1",
         "morgan": "1.10.0",
-        "node-fetch": "2.6.1",
+        "node-fetch": "2.6.7",
         "nodemon": "2.0.6",
         "nps": "5.10.0",
         "nps-utils": "1.7.0",
